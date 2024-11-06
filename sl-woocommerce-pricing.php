@@ -53,7 +53,7 @@ function slwc_settings_page()
 {
 ?>
     <div class="wrap">
-        <h1><?php esc_html_e('SL WooCommerce Pricing Settings', 'sl-woocommerce-pricing') ?></h1>
+        <h1><?php esc_html_e('SL WooCommerce Pricing Settings', 'sl-woocommerce-pricing'); ?></h1>
         <form method="post" action="options.php">
             <?php
             settings_fields('slwc_settings_group');
@@ -63,4 +63,65 @@ function slwc_settings_page()
         </form>
     </div>
 <?php
+}
+
+add_action('admin_init', 'slwc_register_settings');
+function slwc_register_settings()
+{
+    register_setting('slwc_settings_group', 'slwc_enable_special_pricing');
+    register_setting('slwc_settings_group', 'slwc_selected_banks');
+    register_setting('slwc_settings_group', 'slwc_payment_options');
+
+    add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce_pricing'), null, 'sl-woocommerce-pricing');
+
+    add_settings_field('slwc_enable_special_pricing', __('Enable Special Pricing', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_enable_special_pricing', __('Select Payment Option for Each Bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+
+    function slwc_enable_special_pricing_field()
+    {
+        $value = get_option('slwc_enable_special_pricing');
+        echo '<input type="checkbox" value="1"' . checked(1, $value, false) . '/>';
+    }
+
+    function slwc_selected_banks_field()
+    {
+        $banks = [
+            'Nations Trust Bank',
+            'Commercial Bank',
+            'Hatton National Bank',
+            'Sampath Bank',
+            'Seylan Bank',
+            'Bank of Ceylon'
+        ];
+
+        $selected_banks = get_option('slwc_selected_banks', []);
+
+        foreach ($banks as $bank) {
+            $checked = in_array($bank, $selected_banks) ? 'checked' : '';
+            echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . $checked . '/>' . esc_html($bank) . '</label><br>';
+        }
+    }
+
+    function slwc_payment_options_field()
+    {
+        $payment_options = get_option('slwc_payment_options', []);
+
+        $banks = [
+            'Nations Trust Bank',
+            'Commercial Bank',
+            'Hatton National Bank',
+            'Sampath Bank',
+            'Seylan Bank',
+            'Bank of Ceylon'
+        ];
+
+        foreach ($banks as $bank) {
+            $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
+            $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : '';
+
+            echo '<strong>' . esc_html($bank) . '</strong><br>';
+            echo '<label>Instalment: <input type="text" name="slwc_payment_options[' . esc_attr($bank) . '][instalment]" value="' . esc_attr($instalment) . '"</label><br>';
+            echo '<label>Instant: <input type="text" name="slwc_payment_options[' . esc_attr($bank) . '][instalment]" value="' . esc_attr($instant) . '"</label><br>';
+        }
+    }
 }
