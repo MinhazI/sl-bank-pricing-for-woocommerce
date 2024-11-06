@@ -75,7 +75,8 @@ function slwc_register_settings()
     add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
 
     add_settings_field('slwc_enable_special_pricing', __('Enable Special Pricing', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_enable_special_pricing', __('Select Payment Option for Each Bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_selected_banks', __('Select Banks for Instalment Plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_payment_options', __('Select Payment Option for Each Bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
     {
