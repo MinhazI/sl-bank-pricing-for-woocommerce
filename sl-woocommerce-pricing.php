@@ -43,7 +43,7 @@ function slwc_add_admin_menu()
         'SL Woocommerce Pricing',
         'SL Woocommerce Pricing',
         'manage_options',
-        'sl-woocommerce_pricing',
+        'sl_woocommerce_pricing',
         'slwc_settings_page'
     );
 }
@@ -57,7 +57,7 @@ function slwc_settings_page()
         <form method="post" action="options.php">
             <?php
             settings_fields('slwc_settings_group');
-            do_settings_sections('sl-wocommerce-pricing');
+            do_settings_sections('sl-woocommerce-pricing');
             submit_button();
             ?>
         </form>
@@ -72,7 +72,7 @@ function slwc_register_settings()
     register_setting('slwc_settings_group', 'slwc_selected_banks');
     register_setting('slwc_settings_group', 'slwc_payment_options');
 
-    add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce_pricing'), null, 'sl-woocommerce-pricing');
+    add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
 
     add_settings_field('slwc_enable_special_pricing', __('Enable Special Pricing', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_enable_special_pricing', __('Select Payment Option for Each Bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
