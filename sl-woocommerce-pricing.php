@@ -95,7 +95,16 @@ function slwc_register_settings()
     {
         $value = get_option('slwc_enable_special_pricing');
         $checked = $value ? 'checked' : '';
-        echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . $checked . '/>';
+    ?>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <?php echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . $checked . '/>';
+                    ?>
+                </div>
+            </div>
+        </div>
+    <?php
     }
 
     function slwc_selected_banks_field()
@@ -111,10 +120,21 @@ function slwc_register_settings()
 
         $selected_banks = get_option('slwc_selected_banks', []);
 
-        foreach ($banks as $bank) {
-            $checked = in_array($bank, $selected_banks) ? 'checked' : '';
-            echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . $checked . '/>' . esc_html($bank) . '</label><br>';
-        }
+    ?>
+        <div class="container">
+            <div class="row">
+                <?php foreach ($banks as $bank) { ?>
+                    <div class="col-12">
+                        <?php $checked = in_array($bank, $selected_banks) ? 'checked' : '';
+                        echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . $checked . ' />' . esc_html($bank) . '</label><br>';
+                        ?>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    <?php
+
+
     }
 
     function slwc_payment_options_field()
@@ -135,20 +155,39 @@ function slwc_register_settings()
             <div class="row">
 
                 <?php
-                foreach ($banks as $bank) {
+                $selected_banks = get_option('slwc_selected_banks');
+                foreach ($selected_banks as $bank) {
+                    $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
                     $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
                     $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : '';
 
                 ?>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <div class="slwc_bank_settings" name="<?php echo esc_attr($bank); ?>">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" <?php echo $disabled ?>>
                                 <div class="card-body">
-                                    <img src="<?php echo plugin_dir_url(__FILE__) . 'images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top" alt="<?php echo esc_attr($bank); ?>">
-                                    <!-- <h5 class="card-title"><?php echo esc_html($bank) ?></h5> -->
+                                    <div class="slwc_bank_image_holder">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
+                                    </div>
                                     <p class="card-text mt-2">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers</p>
-                                    <label>Instalment: <input type="text" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instalment]" value=<?php echo esc_attr($instalment) ?>></label><br>
-                                    <label>Instant: <input type="text" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value=<?php esc_attr($instant) ?>> </label><br>
+                                    <hr />
+                                    <div class="row mt-3">
+                                        <div class="col-12"> <label><small>Instalment Payment Discount</small></label>
+
+                                            <div class="input-group mb-3 input-group-sm">
+                                                <input type="number" class="form-control" placeholder="Instalment" aria-label="Instalment Payment Discount" aria-describedby="instalment-payment-discount" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instalment]" value="<?php echo esc_attr($instalment) ?>" <?php
+                                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="100" min="1">
+                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12"> <label><small>Instant Payment Discount</small></label>
+                                            <div class="input-group mb-3 input-group-sm">
+                                                <input type="number" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>" <?php
+                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="100" min="1">
+                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
