@@ -48,12 +48,25 @@ function slwc_add_admin_menu()
     );
 }
 
+function slwc_enqueue_admin_style($hook)
+{
+    if ($hook != 'woocommerce_page_sl_woocommerce_pricing') {
+        return;
+    }
+    wp_enqueue_style('slwc_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
+    wp_enqueue_style('slwc_admin', plugin_dir_url(__FILE__) . 'css/admin.css', ['slwc_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'css/admin.css'));
+    wp_enqueue_script('slwc_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
+    wp_enqueue_script('slwc_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slwc_admin_bootstrap_bundle'], '2.9.2', true);
+}
+
+add_action('admin_enqueue_scripts', 'slwc_enqueue_admin_style');
 
 function slwc_settings_page()
 {
 ?>
     <div class="wrap">
         <h1><?php esc_html_e('SL WooCommerce Pricing Settings', 'sl-woocommerce-pricing'); ?></h1>
+        <?php settings_errors(); ?>
         <form method="post" action="options.php">
             <?php
             settings_fields('slwc_settings_group');
@@ -62,7 +75,7 @@ function slwc_settings_page()
             ?>
         </form>
     </div>
-<?php
+    <?php
 }
 
 add_action('admin_init', 'slwc_register_settings');
@@ -74,14 +87,15 @@ function slwc_register_settings()
 
     add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
 
-    add_settings_field('slwc_enable_special_pricing', __('Enable Special Pricing', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_selected_banks', __('Select Banks for Instalment Plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_payment_options', __('Select Payment Option for Each Bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all product', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_payment_options', __('Add the % of discount for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
     {
         $value = get_option('slwc_enable_special_pricing');
-        echo '<input type="checkbox" value="1"' . checked(1, $value, false) . '/>';
+        $checked = $value ? 'checked' : '';
+        echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . $checked . '/>';
     }
 
     function slwc_selected_banks_field()
@@ -116,13 +130,36 @@ function slwc_register_settings()
             'Bank of Ceylon'
         ];
 
-        foreach ($banks as $bank) {
-            $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
-            $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : '';
+    ?>
+        <div class="container">
+            <div class="row">
 
-            echo '<strong>' . esc_html($bank) . '</strong><br>';
-            echo '<label>Instalment: <input type="text" name="slwc_payment_options[' . esc_attr($bank) . '][instalment]" value="' . esc_attr($instalment) . '"</label><br>';
-            echo '<label>Instant: <input type="text" name="slwc_payment_options[' . esc_attr($bank) . '][instalment]" value="' . esc_attr($instant) . '"</label><br>';
-        }
+                <?php
+                foreach ($banks as $bank) {
+                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
+                    $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : '';
+
+                ?>
+                    <div class="col-4">
+                        <div class="slwc_bank_settings" name="<?php echo esc_attr($bank); ?>">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <img src="<?php echo plugin_dir_url(__FILE__) . 'images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top" alt="<?php echo esc_attr($bank); ?>">
+                                    <!-- <h5 class="card-title"><?php echo esc_html($bank) ?></h5> -->
+                                    <p class="card-text mt-2">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers</p>
+                                    <label>Instalment: <input type="text" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instalment]" value=<?php echo esc_attr($instalment) ?>></label><br>
+                                    <label>Instant: <input type="text" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value=<?php esc_attr($instant) ?>> </label><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php
+                }
+                ?>
+                <p><small>Disclosure: The logos of the banks featured in this plugin are trademarks of their respective owners and are used solely for illustrative purposes within the plugin to represent available payment options.</small></p>
+            </div>
+        </div>
+<?php
     }
 }
