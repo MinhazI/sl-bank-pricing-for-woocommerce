@@ -2,13 +2,13 @@
 * Taken from Bootstrap and edited to ensure other layouts of the website doesn't get overriden
 */
 
-.sl-woocommerce-pricing-container,
-.sl-woocommerce-pricing-container-fluid,
-.sl-woocommerce-pricing-container-xxl,
-.sl-woocommerce-pricing-container-xl,
-.sl-woocommerce-pricing-container-lg,
-.sl-woocommerce-pricing-container-md,
-.sl-woocommerce-pricing-container-sm {
+.slwc-container,
+.slwc-container-fluid,
+.slwc-container-xxl,
+.slwc-container-xl,
+.slwc-container-lg,
+.slwc-container-md,
+.slwc-container-sm {
   width: 100%;
   padding-right: var(--bs-gutter-x, 0.75rem);
   padding-left: var(--bs-gutter-x, 0.75rem);
@@ -17,47 +17,47 @@
 }
 
 @media (min-width: 576px) {
-  .sl-woocommerce-pricing-container-sm,
-  .sl-woocommerce-pricing-container {
+  .slwc-container-sm,
+  .slwc-container {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .sl-woocommerce-pricing-container-md,
-  .sl-woocommerce-pricing-container-sm,
-  .sl-woocommerce-pricing-container {
+  .slwc-container-md,
+  .slwc-container-sm,
+  .slwc-container {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .sl-woocommerce-pricing-container-lg,
-  .sl-woocommerce-pricing-container-md,
-  .sl-woocommerce-pricing-container-sm,
-  .sl-woocommerce-pricing-container {
+  .slwc-container-lg,
+  .slwc-container-md,
+  .slwc-container-sm,
+  .slwc-container {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .sl-woocommerce-pricing-container-xl,
-  .sl-woocommerce-pricing-container-lg,
-  .sl-woocommerce-pricing-container-md,
-  .sl-woocommerce-pricing-container-sm,
-  .sl-woocommerce-pricing-container {
+  .slwc-container-xl,
+  .slwc-container-lg,
+  .slwc-container-md,
+  .slwc-container-sm,
+  .slwc-container {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .sl-woocommerce-pricing-container-xxl,
-  .sl-woocommerce-pricing-container-xl,
-  .sl-woocommerce-pricing-container-lg,
-  .sl-woocommerce-pricing-container-md,
-  .sl-woocommerce-pricing-container-sm,
-  .sl-woocommerce-pricing-container {
+  .slwc-container-xxl,
+  .slwc-container-xl,
+  .slwc-container-lg,
+  .slwc-container-md,
+  .slwc-container-sm,
+  .slwc-container {
     max-width: 1320px;
   }
 }
 
-.sl-woocommerce-pricing-row {
+.slwc-row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   display: flex;
@@ -66,7 +66,7 @@
   margin-right: calc(var(--bs-gutter-x) * -0.5);
   margin-left: calc(var(--bs-gutter-x) * -0.5);
 }
-.sl-woocommerce-pricing-row > * {
+.slwc-row > * {
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -75,312 +75,466 @@
   margin-top: var(--bs-gutter-y);
 }
 
-.sl-woocommerce-pricing-col {
+.slwc-col {
   flex: 1 0 0%;
 }
 
-.sl-woocommerce-pricing-row-cols-auto > * {
+.slwc-row-cols-auto > * {
   flex: 0 0 auto;
   width: auto;
 }
 
-.sl-woocommerce-pricing-row-cols-1 > * {
+.slwc-row-cols-1 > * {
   flex: 0 0 auto;
   width: 100%;
 }
 
-.sl-woocommerce-pricing-row-cols-2 > * {
+.slwc-row-cols-2 > * {
   flex: 0 0 auto;
   width: 50%;
 }
 
-.sl-woocommerce-pricing-row-cols-3 > * {
+.slwc-row-cols-3 > * {
   flex: 0 0 auto;
   width: 33.3333333333%;
 }
 
-.sl-woocommerce-pricing-row-cols-4 > * {
+.slwc-row-cols-4 > * {
   flex: 0 0 auto;
   width: 25%;
 }
 
-.sl-woocommerce-pricing-row-cols-5 > * {
+.slwc-row-cols-5 > * {
   flex: 0 0 auto;
   width: 20%;
 }
 
-.sl-woocommerce-pricing-row-cols-6 > * {
+.slwc-row-cols-6 > * {
   flex: 0 0 auto;
   width: 16.6666666667%;
 }
 
 @media (min-width: 576px) {
-  .sl-woocommerce-pricing-col-sm {
+  .slwc-col-sm {
     flex: 1 0 0%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-auto > * {
+  .slwc-row-cols-sm-auto > * {
     flex: 0 0 auto;
     width: auto;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-1 > * {
+  .slwc-row-cols-sm-1 > * {
     flex: 0 0 auto;
     width: 100%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-2 > * {
+  .slwc-row-cols-sm-2 > * {
     flex: 0 0 auto;
     width: 50%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-3 > * {
+  .slwc-row-cols-sm-3 > * {
     flex: 0 0 auto;
     width: 33.3333333333%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-4 > * {
+  .slwc-row-cols-sm-4 > * {
     flex: 0 0 auto;
     width: 25%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-5 > * {
+  .slwc-row-cols-sm-5 > * {
     flex: 0 0 auto;
     width: 20%;
   }
 
-  .sl-woocommerce-pricing-row-cols-sm-6 > * {
+  .slwc-row-cols-sm-6 > * {
     flex: 0 0 auto;
     width: 16.6666666667%;
   }
 }
 @media (min-width: 768px) {
-  .sl-woocommerce-pricing-col-md {
+  .slwc-col-md {
     flex: 1 0 0%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-auto > * {
+  .slwc-row-cols-md-auto > * {
     flex: 0 0 auto;
     width: auto;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-1 > * {
+  .slwc-row-cols-md-1 > * {
     flex: 0 0 auto;
     width: 100%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-2 > * {
+  .slwc-row-cols-md-2 > * {
     flex: 0 0 auto;
     width: 50%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-3 > * {
+  .slwc-row-cols-md-3 > * {
     flex: 0 0 auto;
     width: 33.3333333333%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-4 > * {
+  .slwc-row-cols-md-4 > * {
     flex: 0 0 auto;
     width: 25%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-5 > * {
+  .slwc-row-cols-md-5 > * {
     flex: 0 0 auto;
     width: 20%;
   }
 
-  .sl-woocommerce-pricing-row-cols-md-6 > * {
+  .slwc-row-cols-md-6 > * {
     flex: 0 0 auto;
     width: 16.6666666667%;
   }
 }
 @media (min-width: 992px) {
-  .sl-woocommerce-pricing-col-lg {
+  .slwc-col-lg {
     flex: 1 0 0%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-auto > * {
+  .slwc-row-cols-lg-auto > * {
     flex: 0 0 auto;
     width: auto;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-1 > * {
+  .slwc-row-cols-lg-1 > * {
     flex: 0 0 auto;
     width: 100%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-2 > * {
+  .slwc-row-cols-lg-2 > * {
     flex: 0 0 auto;
     width: 50%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-3 > * {
+  .slwc-row-cols-lg-3 > * {
     flex: 0 0 auto;
     width: 33.3333333333%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-4 > * {
+  .slwc-row-cols-lg-4 > * {
     flex: 0 0 auto;
     width: 25%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-5 > * {
+  .slwc-row-cols-lg-5 > * {
     flex: 0 0 auto;
     width: 20%;
   }
 
-  .sl-woocommerce-pricing-row-cols-lg-6 > * {
+  .slwc-row-cols-lg-6 > * {
     flex: 0 0 auto;
     width: 16.6666666667%;
   }
 }
 @media (min-width: 1200px) {
-  .sl-woocommerce-pricing-col-xl {
+  .slwc-col-xl {
     flex: 1 0 0%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-auto > * {
+  .slwc-row-cols-xl-auto > * {
     flex: 0 0 auto;
     width: auto;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-1 > * {
+  .slwc-row-cols-xl-1 > * {
     flex: 0 0 auto;
     width: 100%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-2 > * {
+  .slwc-row-cols-xl-2 > * {
     flex: 0 0 auto;
     width: 50%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-3 > * {
+  .slwc-row-cols-xl-3 > * {
     flex: 0 0 auto;
     width: 33.3333333333%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-4 > * {
+  .slwc-row-cols-xl-4 > * {
     flex: 0 0 auto;
     width: 25%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-5 > * {
+  .slwc-row-cols-xl-5 > * {
     flex: 0 0 auto;
     width: 20%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xl-6 > * {
+  .slwc-row-cols-xl-6 > * {
     flex: 0 0 auto;
     width: 16.6666666667%;
   }
 }
 @media (min-width: 1400px) {
-  .sl-woocommerce-pricing-col-xxl {
+  .slwc-col-xxl {
     flex: 1 0 0%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-auto > * {
+  .slwc-row-cols-xxl-auto > * {
     flex: 0 0 auto;
     width: auto;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-1 > * {
+  .slwc-row-cols-xxl-1 > * {
     flex: 0 0 auto;
     width: 100%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-2 > * {
+  .slwc-row-cols-xxl-2 > * {
     flex: 0 0 auto;
     width: 50%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-3 > * {
+  .slwc-row-cols-xxl-3 > * {
     flex: 0 0 auto;
     width: 33.3333333333%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-4 > * {
+  .slwc-row-cols-xxl-4 > * {
     flex: 0 0 auto;
     width: 25%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-5 > * {
+  .slwc-row-cols-xxl-5 > * {
     flex: 0 0 auto;
     width: 20%;
   }
 
-  .sl-woocommerce-pricing-row-cols-xxl-6 > * {
+  .slwc-row-cols-xxl-6 > * {
     flex: 0 0 auto;
     width: 16.6666666667%;
   }
 }
-.sl-woocommerce-pricing-col-auto {
+.slwc-col-auto {
   flex: 0 0 auto;
   width: auto;
 }
 
-.sl-woocommerce-pricing-col-1 {
+.slwc-col-1 {
   flex: 0 0 auto;
   width: 8.33333333%;
 }
 
-.sl-woocommerce-pricing-col-2 {
+.slwc-col-2 {
   flex: 0 0 auto;
   width: 16.66666667%;
 }
 
-.sl-woocommerce-pricing-col-3 {
+.slwc-col-3 {
   flex: 0 0 auto;
   width: 25%;
 }
 
-.sl-woocommerce-pricing-col-4 {
+.slwc-col-4 {
   flex: 0 0 auto;
   width: 33.33333333%;
 }
 
-.sl-woocommerce-pricing-col-5 {
+.slwc-col-5 {
   flex: 0 0 auto;
   width: 41.66666667%;
 }
 
-.sl-woocommerce-pricing-col-6 {
+.slwc-col-6 {
   flex: 0 0 auto;
   width: 50%;
 }
 
-.sl-woocommerce-pricing-col-7 {
+.slwc-col-7 {
   flex: 0 0 auto;
   width: 58.33333333%;
 }
 
-.sl-woocommerce-pricing-col-8 {
+.slwc-col-8 {
   flex: 0 0 auto;
   width: 66.66666667%;
 }
 
-.sl-woocommerce-pricing-col-9 {
+.slwc-col-9 {
   flex: 0 0 auto;
   width: 75%;
 }
 
-.sl-woocommerce-pricing-col-10 {
+.slwc-col-10 {
   flex: 0 0 auto;
   width: 83.33333333%;
 }
 
-.sl-woocommerce-pricing-col-11 {
+.slwc-col-11 {
   flex: 0 0 auto;
   width: 91.66666667%;
 }
 
-.sl-woocommerce-pricing-col-12 {
+.slwc-col-12 {
   flex: 0 0 auto;
   width: 100%;
 }
 
-/* Code taken from Bootstrap ends here */
+@media (min-width: 576px) {
+  .slwc-col-sm-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
 
-.slwc_bank_image_holder {
-  width: 25%;
+  .slwc-col-sm-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+
+  .slwc-col-sm-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .slwc-col-sm-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .slwc-col-sm-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .slwc-col-sm-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+
+  .slwc-col-sm-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .slwc-col-sm-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+
+  .slwc-col-sm-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .slwc-col-sm-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .slwc-col-sm-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .slwc-col-sm-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+
+  .slwc-col-sm-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .slwc-col-md-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .slwc-col-md-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+
+  .slwc-col-md-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .slwc-col-md-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .slwc-col-md-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .slwc-col-md-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+
+  .slwc-col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .slwc-col-md-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+
+  .slwc-col-md-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .slwc-col-md-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .slwc-col-md-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .slwc-col-md-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+
+  .slwc-col-md-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+/* Code taken from Bootstrap ends here */
+.slwc-bank-image-holder {
+  max-width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slwc-bank-plan {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+  padding: 5px 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.slwc-bank-instalment-title {
+  margin-top: 2rem;
+}
+
+.slwc_mt_10 {
+  margin-top: 4rem;
 }

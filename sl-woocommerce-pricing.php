@@ -174,16 +174,16 @@ function slwc_register_settings()
 
                 foreach ($selected_banks as $bank) {
                     $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
-                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
-                    $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : '';
+                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : 0;
+                    $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : 0;
 
                 ?>
                     <div class="col-12 col-md-4">
                         <div class="slwc_bank_settings" name="<?php echo esc_attr($bank); ?>">
                             <div class="card" <?php echo $disabled ?>>
                                 <div class="card-body">
-                                    <div class="slwc_bank_image_holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
+                                    <div class="slwc-bank-image-holder">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-2">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
@@ -223,28 +223,50 @@ function slwc_display_banks_on_product_page()
 {
     global $product;
 
-    $banks = get_option('slwc_payment_options');  // Get bank options from the settings
+    $banks = get_option('slwc_payment_options');
     ?>
-    <div class="sl-woocommerce-pricing-container">
-        <div class="sl-woocommerce-pricing-row">
+    <div class="slwc-container slwc_mt_10">
+        <div class="slwc-row">
+            <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
+            <h5 class="slwc-bank-instant-pay-title">Spot Bank Payment Pricing</h5>
             <?php
             foreach ($banks as $bank => $bank_prices) {
-                if ($bank_prices) {
-                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instalment'] / 100));
+                if ($bank_prices && $bank_prices['instant'] != 0) {
+                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instant'] / 100));
             ?>
 
-                    <div class="sl-woocommerce-pricing-col-3">
-                        <div class="bank-installment-plan">
-                            <div class="slwc_bank_image_holder">
-                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
+                    <div class="slwc-col-sm-12 slwc-col-md-5">
+                        <div class="slwc-bank-plan slwc-bank-instant-price">
+                            <div class="slwc-bank-image-holder">
+                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                             </div>
-                            <span><?php echo esc_html($bank) . ':' . wc_price($price) ?></span>
+                            <p><b><?php echo wc_price($price) ?></b></p>
                         </div>
                     </div>
             <?php
                 }
             } ?>
 
+        </div>
+        <div class="slwc-row">
+            <h5 class="slwc-bank-instalment-title">Bank Specific Instalment Rates</h5>
+            <?php
+            foreach ($banks as $bank => $bank_prices) {
+                if ($bank_prices && $bank_prices['instalment'] != 0) {
+                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instalment'] / 100));
+            ?>
+
+                    <div class="slwc-col-sm-12 slwc-col-md-5">
+                        <div class="slwc-bank-plan slwc-bank-instalment-price">
+                            <div class="slwc-bank-image-holder">
+                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                            </div>
+                            <p><b><?php echo wc_price($price) ?></b></p>
+                        </div>
+                    </div>
+            <?php
+                }
+            } ?>
         </div>
     </div>
 <?php
