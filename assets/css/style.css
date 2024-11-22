@@ -1,0 +1,386 @@
+/*
+* Taken from Bootstrap and edited to ensure other layouts of the website doesn't get overriden
+*/
+
+.sl-woocommerce-pricing-container,
+.sl-woocommerce-pricing-container-fluid,
+.sl-woocommerce-pricing-container-xxl,
+.sl-woocommerce-pricing-container-xl,
+.sl-woocommerce-pricing-container-lg,
+.sl-woocommerce-pricing-container-md,
+.sl-woocommerce-pricing-container-sm {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 0.75rem);
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .sl-woocommerce-pricing-container-sm,
+  .sl-woocommerce-pricing-container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .sl-woocommerce-pricing-container-md,
+  .sl-woocommerce-pricing-container-sm,
+  .sl-woocommerce-pricing-container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .sl-woocommerce-pricing-container-lg,
+  .sl-woocommerce-pricing-container-md,
+  .sl-woocommerce-pricing-container-sm,
+  .sl-woocommerce-pricing-container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .sl-woocommerce-pricing-container-xl,
+  .sl-woocommerce-pricing-container-lg,
+  .sl-woocommerce-pricing-container-md,
+  .sl-woocommerce-pricing-container-sm,
+  .sl-woocommerce-pricing-container {
+    max-width: 1140px;
+  }
+}
+@media (min-width: 1400px) {
+  .sl-woocommerce-pricing-container-xxl,
+  .sl-woocommerce-pricing-container-xl,
+  .sl-woocommerce-pricing-container-lg,
+  .sl-woocommerce-pricing-container-md,
+  .sl-woocommerce-pricing-container-sm,
+  .sl-woocommerce-pricing-container {
+    max-width: 1320px;
+  }
+}
+
+.sl-woocommerce-pricing-row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+}
+.sl-woocommerce-pricing-row > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.sl-woocommerce-pricing-col {
+  flex: 1 0 0%;
+}
+
+.sl-woocommerce-pricing-row-cols-auto > * {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.sl-woocommerce-pricing-row-cols-1 > * {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.sl-woocommerce-pricing-row-cols-2 > * {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.sl-woocommerce-pricing-row-cols-3 > * {
+  flex: 0 0 auto;
+  width: 33.3333333333%;
+}
+
+.sl-woocommerce-pricing-row-cols-4 > * {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.sl-woocommerce-pricing-row-cols-5 > * {
+  flex: 0 0 auto;
+  width: 20%;
+}
+
+.sl-woocommerce-pricing-row-cols-6 > * {
+  flex: 0 0 auto;
+  width: 16.6666666667%;
+}
+
+@media (min-width: 576px) {
+  .sl-woocommerce-pricing-col-sm {
+    flex: 1 0 0%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-auto > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-1 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-4 > * {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-sm-6 > * {
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
+}
+@media (min-width: 768px) {
+  .sl-woocommerce-pricing-col-md {
+    flex: 1 0 0%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-auto > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-1 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-4 > * {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-md-6 > * {
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
+}
+@media (min-width: 992px) {
+  .sl-woocommerce-pricing-col-lg {
+    flex: 1 0 0%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-auto > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-1 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-4 > * {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-lg-6 > * {
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
+}
+@media (min-width: 1200px) {
+  .sl-woocommerce-pricing-col-xl {
+    flex: 1 0 0%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-auto > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-1 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-4 > * {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xl-6 > * {
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
+}
+@media (min-width: 1400px) {
+  .sl-woocommerce-pricing-col-xxl {
+    flex: 1 0 0%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-auto > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-1 > * {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-4 > * {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+
+  .sl-woocommerce-pricing-row-cols-xxl-6 > * {
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
+}
+.sl-woocommerce-pricing-col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.sl-woocommerce-pricing-col-1 {
+  flex: 0 0 auto;
+  width: 8.33333333%;
+}
+
+.sl-woocommerce-pricing-col-2 {
+  flex: 0 0 auto;
+  width: 16.66666667%;
+}
+
+.sl-woocommerce-pricing-col-3 {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.sl-woocommerce-pricing-col-4 {
+  flex: 0 0 auto;
+  width: 33.33333333%;
+}
+
+.sl-woocommerce-pricing-col-5 {
+  flex: 0 0 auto;
+  width: 41.66666667%;
+}
+
+.sl-woocommerce-pricing-col-6 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.sl-woocommerce-pricing-col-7 {
+  flex: 0 0 auto;
+  width: 58.33333333%;
+}
+
+.sl-woocommerce-pricing-col-8 {
+  flex: 0 0 auto;
+  width: 66.66666667%;
+}
+
+.sl-woocommerce-pricing-col-9 {
+  flex: 0 0 auto;
+  width: 75%;
+}
+
+.sl-woocommerce-pricing-col-10 {
+  flex: 0 0 auto;
+  width: 83.33333333%;
+}
+
+.sl-woocommerce-pricing-col-11 {
+  flex: 0 0 auto;
+  width: 91.66666667%;
+}
+
+.sl-woocommerce-pricing-col-12 {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+/* Code taken from Bootstrap ends here */
+
+.slwc_bank_image_holder {
+  width: 25%;
+}

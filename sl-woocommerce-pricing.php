@@ -55,9 +55,16 @@ function slwc_enqueue_admin_style($hook)
         return;
     }
     wp_enqueue_style('slwc_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
-    wp_enqueue_style('slwc_admin', plugin_dir_url(__FILE__) . 'css/admin.css', ['slwc_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'css/admin.css'));
+    wp_enqueue_style('slwc_admin', plugin_dir_url(__FILE__) . 'assets/css/admin.css', ['slwc_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'assets/css/admin.css'));
     wp_enqueue_script('slwc_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
     wp_enqueue_script('slwc_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slwc_admin_bootstrap_bundle'], '2.9.2', true);
+}
+
+add_action('wp_enqueue_scripts', 'slwc_enqueue_scripts');
+
+function slwc_enqueue_scripts($hook)
+{
+    wp_enqueue_style('slwc', plugin_dir_url(__FILE__) . 'assets/css/style.css', [], filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css'));
 }
 
 function slwc_settings_page()
@@ -176,7 +183,7 @@ function slwc_register_settings()
                             <div class="card" <?php echo $disabled ?>>
                                 <div class="card-body">
                                     <div class="slwc_bank_image_holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-2">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
@@ -208,6 +215,39 @@ function slwc_register_settings()
                 <p><small>Disclosure: The logos of the banks featured in this plugin are trademarks of their respective owners and are used solely for illustrative purposes within the plugin to represent available payment options.</small></p>
             </div>
         </div>
-<?php
+    <?php
     }
 }
+
+function slwc_display_banks_on_product_page()
+{
+    global $product;
+
+    $banks = get_option('slwc_payment_options');  // Get bank options from the settings
+    ?>
+    <div class="sl-woocommerce-pricing-container">
+        <div class="sl-woocommerce-pricing-row">
+            <?php
+            foreach ($banks as $bank => $bank_prices) {
+                if ($bank_prices) {
+                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instalment'] / 100));
+            ?>
+
+                    <div class="sl-woocommerce-pricing-col-3">
+                        <div class="bank-installment-plan">
+                            <div class="slwc_bank_image_holder">
+                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc_bank_image" alt="<?php echo esc_attr($bank); ?>">
+                            </div>
+                            <span><?php echo esc_html($bank) . ':' . wc_price($price) ?></span>
+                        </div>
+                    </div>
+            <?php
+                }
+            } ?>
+
+        </div>
+    </div>
+<?php
+
+}
+add_action('woocommerce_single_product_summary', 'slwc_display_banks_on_product_page', 25);
