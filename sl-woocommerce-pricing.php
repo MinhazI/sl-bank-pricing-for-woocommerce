@@ -43,14 +43,15 @@ function slwc_add_admin_menu()
         'SL Woocommerce Pricing',
         'SL Woocommerce Pricing',
         'manage_options',
-        'sl_woocommerce_pricing',
+        'sl-woocommerce-pricing',
         'slwc_settings_page'
     );
 }
 
+add_action('admin_enqueue_scripts', 'slwc_enqueue_admin_style');
 function slwc_enqueue_admin_style($hook)
 {
-    if ($hook != 'woocommerce_page_sl_woocommerce_pricing') {
+    if ($hook != 'woocommerce_page_sl-woocommerce-pricing') {
         return;
     }
     wp_enqueue_style('slwc_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
@@ -58,8 +59,6 @@ function slwc_enqueue_admin_style($hook)
     wp_enqueue_script('slwc_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
     wp_enqueue_script('slwc_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slwc_admin_bootstrap_bundle'], '2.9.2', true);
 }
-
-add_action('admin_enqueue_scripts', 'slwc_enqueue_admin_style');
 
 function slwc_settings_page()
 {
@@ -82,8 +81,21 @@ add_action('admin_init', 'slwc_register_settings');
 function slwc_register_settings()
 {
     register_setting('slwc_settings_group', 'slwc_enable_special_pricing');
-    register_setting('slwc_settings_group', 'slwc_selected_banks');
-    register_setting('slwc_settings_group', 'slwc_payment_options');
+    register_setting('slwc_settings_group', 'slwc_selected_banks', [
+        'sanitize_callback' => function ($input) {
+            return is_array($input) ? array_map('sanitize_text_field', $input) : [];
+        }
+    ]);
+    register_setting('slwc_settings_group', 'slwc_payment_options', ['sanitize_callback' => function ($input) {
+        if (is_array($input)) {
+            foreach ($input as $key => $values) {
+                $input[$key]['instalment'] = isset($values['instalment']) ? floatval($values['instalment']) : 0;
+                $input[$key]['instant'] = isset($values['instant']) ? floatval($values['instant']) : 0;
+            }
+
+            return $input;
+        }
+    }]);
 
     add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
 
@@ -140,22 +152,19 @@ function slwc_register_settings()
     function slwc_payment_options_field()
     {
         $payment_options = get_option('slwc_payment_options', []);
-
-        $banks = [
-            'Nations Trust Bank',
-            'Commercial Bank',
-            'Hatton National Bank',
-            'Sampath Bank',
-            'Seylan Bank',
-            'Bank of Ceylon'
-        ];
+        $selected_banks = get_option('slwc_selected_banks', []);
 
     ?>
         <div class="container">
             <div class="row">
 
                 <?php
-                $selected_banks = get_option('slwc_selected_banks');
+
+                if (!$selected_banks) {
+                    echo '<p>No banks selected. Please select banks in the above section.</p>';
+                    return;
+                }
+
                 foreach ($selected_banks as $bank) {
                     $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
                     $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
@@ -175,15 +184,15 @@ function slwc_register_settings()
                                         <div class="col-12"> <label><small>Instalment Payment Discount</small></label>
 
                                             <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" class="form-control" placeholder="Instalment" aria-label="Instalment Payment Discount" aria-describedby="instalment-payment-discount" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instalment]" value="<?php echo esc_attr($instalment) ?>" <?php
-                                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="100" min="1">
+                                                <input type="number" step="0.1" class="form-control" placeholder="Instalment" aria-label="Instalment Payment Discount" aria-describedby="instalment-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment]" value="<?php echo esc_attr($instalment) ?>" <?php
+                                                                                                                                                                                                                                                                                                                                            echo $disabled ?> max="100" min="0">
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
                                         <div class="col-12"> <label><small>Instant Payment Discount</small></label>
                                             <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[ <?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>" <?php
-                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="100" min="1">
+                                                <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>" <?php
+                                                                                                                                                                                                                                                                                                                            echo $disabled ?> max="100" min="0">
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
