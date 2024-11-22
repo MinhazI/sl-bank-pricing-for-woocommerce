@@ -40,8 +40,8 @@ function slwc_add_admin_menu()
 {
     add_submenu_page(
         'woocommerce',
-        'SL Woocommerce Pricing',
-        'SL Woocommerce Pricing',
+        'SL WooCommerce Pricing',
+        'SL WooCommerce Pricing',
         'manage_options',
         'sl-woocommerce-pricing',
         'slwc_settings_page'
