@@ -97,8 +97,8 @@ function slwc_register_settings()
         if (is_array($input)) {
             foreach ($input as $key => $values) {
                 if (isset($values['instalment']) && is_array($values['instalment'])) {
-                    foreach ($values['instalment'] as $duration => $surecharge) {
-                        $input[$key]['instalment'][$duration] = floatval($surecharge);
+                    foreach ($values['instalment'] as $duration => $surcharge) {
+                        $input[$key]['instalment'][$duration] = floatval($surcharge);
                     }
                 } else {
                     $input[$key]['instalment'] = [];
@@ -114,7 +114,7 @@ function slwc_register_settings()
 
     add_settings_field('slwc_enable_special_pricing', __('Show pricing for all product', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_payment_options', __('Add the % of discount for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
     {
@@ -191,10 +191,10 @@ function slwc_register_settings()
                                     <div class="slwc-bank-image-holder">
                                         <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
-                                    <p class="card-text mt-2">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers</p>
+                                    <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
                                     <div class="row mt-3">
-                                        <div class="col-12"> <label><small>Surecharge for 6 Instalment Plans</small></label>
+                                        <div class="col-12"> <label><small>Surcharge for 6 months Instalment Plans</small></label>
 
                                             <div class="input-group mb-3 input-group-sm">
                                                 <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][6]" value="<?php echo esc_attr($instalment[6]) ?>" <?php
@@ -202,7 +202,7 @@ function slwc_register_settings()
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
-                                        <div class="col-12"> <label><small>Surecharge 12 Instalment Plans</small></label>
+                                        <div class="col-12"> <label><small>Surcharge 12 months Instalment Plans</small></label>
 
                                             <div class="input-group mb-3 input-group-sm">
                                                 <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][12]" value="<?php echo esc_attr($instalment[12]) ?>" <?php
@@ -210,7 +210,7 @@ function slwc_register_settings()
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
-                                        <div class="col-12"> <label><small>Surecharge 24 Instalment Plans</small></label>
+                                        <div class="col-12 mb-2"> <label><small>Surcharge 24 months Instalment Plans</small></label>
 
                                             <div class="input-group mb-3 input-group-sm">
                                                 <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][24]" value="<?php echo esc_attr($instalment[24]) ?>" <?php
@@ -218,6 +218,10 @@ function slwc_register_settings()
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <p class="card-text mt-4">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers when they pay instantly</p>
+                                    <hr />
+                                    <div class="row mt-1">
                                         <div class="col-12"> <label><small>Instant Payment Discount</small></label>
                                             <div class="input-group mb-3 input-group-sm">
                                                 <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>" <?php
@@ -234,8 +238,9 @@ function slwc_register_settings()
                 <?php
                 }
                 ?>
-                <p><small>Disclosure: The logos of the banks featured in this plugin are trademarks of their respective owners and are used solely for illustrative purposes within the plugin to represent available payment options.</small></p>
+
             </div>
+            <p class="mt-5"><small>Disclosure: The logos of the banks featured in this plugin are trademarks of their respective owners and are used solely for illustrative purposes within the plugin to represent available payment options.</small></p>
         </div>
     <?php
     }
