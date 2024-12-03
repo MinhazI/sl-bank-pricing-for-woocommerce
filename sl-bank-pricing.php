@@ -52,10 +52,9 @@ function slbp_enqueue_admin_style($hook)
     if ($hook != 'woocommerce_page_sl-bank-pricing') {
         return;
     }
-    wp_enqueue_style('slbp_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
+    wp_enqueue_style('slbp_admin_bootstrap', plugin_dir_url(__FILE__) . 'assets/css/bootstrap.min.css', [], '5.0.2');
     wp_enqueue_style('slbp_admin', plugin_dir_url(__FILE__) . 'assets/css/admin.css', ['slbp_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'assets/css/admin.css'));
-    wp_enqueue_script('slbp_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
-    wp_enqueue_script('slbp_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slbp_admin_bootstrap_bundle'], '2.9.2', true);
+    wp_enqueue_script('slbp_admin_bootstrap_bundle', plugin_dir_url(__FILE__) . 'assets/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
 }
 
 add_action('wp_enqueue_scripts', 'slbp_enqueue_scripts');
