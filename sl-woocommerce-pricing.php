@@ -112,11 +112,15 @@ function slwc_register_settings()
         }
     }]);
     register_setting('slwc_settings_group', 'slwc_show_instant_prices');
+    register_setting('slwc_settings_group', 'slwc_front_end_message', ['sanitize_callback' => function ($input) {
+        return wp_kses_post($input);
+    }]);
 
     add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
     add_settings_field('slwc_enable_special_pricing', __('Show pricing for all products?', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all prducts?', 'sl-woocommerce-pricing'), 'slwc_show_instant_prices_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all products?', 'sl-woocommerce-pricing'), 'slwc_show_instant_prices_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_front_end_message', __('Show a message to your customers about these prices', 'sl-woocommerce-pricing'), 'slwc_front_end_message_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
@@ -181,6 +185,20 @@ function slwc_register_settings()
 
     }
 
+    function slwc_front_end_message_field()
+    { ?>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label for="slwc_front_end_message" class="form-label">Enter your message here. <i><small>You can use HTML if you require</small></i></label>
+                    <textarea class="form-control" id="slwc_front_end_message" name="slwc_front_end_message" rows="3"><?php echo esc_textarea(get_option('slwc_front_end_message', 'Please <b>contact us</b> before placing an order if you want to use the special prices listed here.')) ?></textarea>
+                    <div id="slwc_front_end_message_help" class="form-text">An example would be: Please contact us on 077123456 before placing your order if you want to use the special prices mentioned</div>
+                </div>
+            </div>
+        </div>
+    <?php
+    }
+
     function slwc_payment_options_field()
     {
         $payment_options = get_option('slwc_payment_options', []);
@@ -224,7 +242,7 @@ function slwc_register_settings()
                                                             <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? 'checked' : '' ?> />
                                                     </div>
                                                     <div class="col-10">
-                                                        <label><small>Surcharge <?php echo $month ?> months Instalment Plans</small></label>
+                                                        <label><small>Surcharge <?php echo $month ?> months instalment plans</small></label>
                                                     </div>
                                                 </div>
                                                 <div class="input-group mb-3 input-group-sm">
@@ -235,7 +253,7 @@ function slwc_register_settings()
                                                         aria-label="Instalment Duration"
                                                         aria-describedby="instalment-duration"
                                                         name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][surcharge]"
-                                                        value="<?php echo esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
+                                                        value="<?php echo isset($instalment[$month]['surcharge']) && esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
                                                         <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
                                                         echo $disabled ?>
                                                         min="0">
@@ -286,6 +304,9 @@ function slwc_display_banks_on_product_page()
         <div class="slwc-container slwc_mt_10">
             <div class="slwc-row">
                 <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
+                <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
+                    Tooltip on top
+                </button>
 
                 <?php
                 if (!$hide_instant_price):
