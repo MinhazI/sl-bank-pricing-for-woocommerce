@@ -146,7 +146,7 @@ function slwc_register_settings()
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <?php echo '<input type="checkbox" value="1" name="slwc_show_instant_prices"' . $checked . '/>';
+                    <?php echo '<input type="checkbox" value="1" name="slwc_show_instant_prices"' . esc_attr($checked) . '/>';
                     ?>
                 </div>
             </div>
@@ -227,7 +227,7 @@ function slwc_register_settings()
                             <div class="card" <?php echo $disabled ?>>
                                 <div class="card-body">
                                     <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
