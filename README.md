@@ -1,30 +1,50 @@
-# SL WooCommerce Pricing [WORK IN PROGRESS]
+=== SL Bank Pricing for WooCommerce ===
+Contributors: Minhaz Irphan Mohamed
+Donate link: https://minhazimohamed.com
+Tags: WooCommerce, Sri Lanka, Pricing, Installments
+Requires at least: 5.8
+Tested up to: 6.7
+Requires PHP: 7.4
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-**SL WooCommerce Pricing** is a work in prgress plugin for WooCommerce that allows store admins to offer special pricing and installment plans for Sri Lankan bank customers. This plugin enables WooCommerce store owners to customize pricing options for specific banks, including both installment and instant payment options.
+# SL Bank Pricing for WooCommerce
 
-## Features
+**SL Bank Pricing for WooCommerce** is a plugin that allows WooCommerce store admins to offer special pricing and installment plans for Sri Lankan bank customers. This plugin integrates seamlessly with WooCommerce, enabling custom pricing options for specific banks, including installment and instant payment plans.
 
-- Enable special pricing for Sri Lankan bank customers.
-- Select which Sri Lankan banks will be available for installment plans.
-- Display options for both **Instalment** and **Instant Payment** for each selected bank.
-- Provide a bank transfer option for instant payments.
-- Fully integrates with WooCommerce's existing product pricing.
+## Description
+
+With **SL Bank Pricing for WooCommerce**, store owners can:
+
+- Enable special pricing for products for Sri Lankan bank customers.
+- Configure installment and instant payment options for supported banks.
+
+The plugin is user-friendly and integrates fully with WooCommerce's existing pricing and checkout systems, making it easier for customers to view and use special pricing based on their bank.
 
 ## Installation
 
-1. Upload the `sl-woocommerce-pricing` plugin to the `/wp-content/plugins/` directory.
-2. Activate the plugin through the **Plugins** menu in WordPress.
-3. Go to **WooCommerce > SL WooCommerce Pricing** to configure the plugin settings.
+1. **From the WordPress Dashboard**:
+
+   - Navigate to **Plugins > Add New**.
+   - Search for `SL Bank Pricing for WooCommerce`.
+   - Click **Install Now**, and then **Activate**.
+
+2. **Manual Installation**:
+   - Download the plugin ZIP file from the WordPress plugin repository.
+   - Upload the ZIP file via **Plugins > Add New > Upload Plugin** in your WordPress dashboard.
+   - Activate the plugin.
 
 ## Configuration
 
 ### Enabling Special Pricing
-- Navigate to **WooCommerce > SL WooCommerce Pricing**.
-- Enable the **Special Pricing** checkbox to override the default WooCommerce pricing for all products.
 
-### Selecting Banks for Installment Plans
-- In the settings, you can choose which Sri Lankan banks will be displayed as installment options.
-- The available banks are:
+1. Go to **WooCommerce > SL Bank Pricing Settings**.
+2. Check the **Enable Special Pricing** box to override regular product pricing.
+
+### Configuring Banks
+
+- Select which Sri Lankan banks will have special pricing options:
   - Nations Trust Bank
   - Commercial Bank
   - Hatton National Bank
@@ -32,49 +52,40 @@
   - Seylan Bank
   - Bank of Ceylon
 
-### Defining Payment Options
-- For each bank, you can configure two types of payment options:
-  1. **Instalment** – Set installment terms for customers.
-  2. **Instant Payment** – Set options for customers paying in full upfront.
+### Setting Payment Options
 
-### Bank Transfer Option
-- Enable a **Bank Transfer** option for instant payments for the selected banks.
+For each bank, you can configure:
+
+1. **Installment Plans**: Define terms and surcharges for installments.
+2. **Instant Payment Options**: Offer discounts or direct bank transfer options.
 
 ## Usage
 
-Once the plugin is activated and configured:
-- On each product page, customers from the selected banks will see customized pricing and available payment options.
-- If **Special Pricing** is enabled, the regular price will be replaced with the special pricing for bank customers.
-- Bank installment and instant payment options will be displayed on the checkout page.
+Once configured:
 
-## Changelog
-
-### 0.1.0
-- Initial release.
+- Customers will see special pricing and payment options (installments, instant payments) on eligible product pages.
+- Options are also displayed at checkout for customers selecting an eligible bank.
 
 ## Frequently Asked Questions (FAQ)
 
-### 1. **How do I enable special pricing?**
-   To enable special pricing, go to **WooCommerce > SL WooCommerce Pricing** and check the **Enable Special Pricing** option.
+### 1. How do I enable special pricing?
 
-### 2. **Which banks can I select for installment plans?**
-   The plugin currently supports the following banks:
-   - Nations Trust Bank
-   - Commercial Bank
-   - Hatton National Bank
-   - Sampath Bank
-   - Seylan Bank
-   - Bank of Ceylon
+Go to **WooCommerce > SL Bank Pricing Settings** and check the **Enable Special Pricing** option.
 
-### 3. **How do I display the payment options on the checkout page?**
-   Payment options (Instalment and Instant Payment) will automatically be displayed during checkout for customers who select an eligible bank.
+### 2. Can I select multiple banks for installment plans?
 
-## Support
+Yes, you can select any combination of the supported banks.
 
-For support, please reach out to the plugin author:
-- Email: [hello@minhazimohamed.com](mailto:hello@minhazimohamed.com)
-- Website: [https://minhazimohamed.com](https://minhazimohamed.com)
+### 3. Does this plugin affect regular pricing?
+
+Only when **Special Pricing** is enabled. Regular pricing remains unaffected otherwise.
+
+## Changelog
+
+### 1.0.0
+
+- Initial release.
 
 ## License
 
-This plugin is licensed under the [GPL-2.0 License](https://www.gnu.org/licenses/gpl-2.0.html).
+This plugin is licensed under the [GPL-2.0 License](https://www.gnu.org/licenses/gpl-2.0.html). You are free to modify and redistribute the plugin under the terms of this license.
