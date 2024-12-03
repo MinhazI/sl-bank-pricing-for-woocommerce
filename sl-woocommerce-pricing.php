@@ -237,11 +237,11 @@ function slwc_register_settings()
                                                 <div class="row">
                                                     <div class="col-2">
                                                         <input type="checkbox"
-                                                            name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][enabled]"
+                                                            name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][enabled]"
                                                             <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? 'checked' : '' ?> />
                                                     </div>
                                                     <div class="col-10">
-                                                        <label><small>Surcharge <?php echo $month ?> months instalment plans</small></label>
+                                                        <label><small>Surcharge <?php echo esc_attr($month) ?> months instalment plans</small></label>
                                                     </div>
                                                 </div>
                                                 <div class="input-group mb-3 input-group-sm">
@@ -251,7 +251,7 @@ function slwc_register_settings()
                                                         placeholder="Instalment"
                                                         aria-label="Instalment Duration"
                                                         aria-describedby="instalment-duration"
-                                                        name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][surcharge]"
+                                                        name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][surcharge]"
                                                         value="<?php echo isset($instalment[$month]['surcharge']) && esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
                                                         <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
                                                         echo esc_attr($disabled) ?>
