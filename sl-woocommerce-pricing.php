@@ -13,7 +13,6 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Update URI:        https://minhazimohamed.com/sl-woocommerce-pricing/
  * Text Domain:       sl-woocommerce-pricing
- * Domain Path:       /languages
  * Requires Plugins:  woocommerce
  */
 
