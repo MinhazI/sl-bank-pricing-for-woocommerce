@@ -97,8 +97,10 @@ function slwc_register_settings()
         if (is_array($input)) {
             foreach ($input as $key => $values) {
                 if (isset($values['instalment']) && is_array($values['instalment'])) {
-                    foreach ($values['instalment'] as $duration => $surcharge) {
-                        $input[$key]['instalment'][$duration] = floatval($surcharge);
+                    foreach ($values['instalment'] as $duration => $details) {
+                        $surcharge = isset($details['surcharge']) ? floatval($details['surcharge']) : 0;
+                        $enabled = isset($details['enabled']) ? filter_var($details['enabled'], FILTER_VALIDATE_BOOLEAN) : false;
+                        $input[$key]['instalment'][$duration] = ['surcharge' => $surcharge, 'enabled' => $enabled];
                     }
                 } else {
                     $input[$key]['instalment'] = [];
@@ -109,11 +111,12 @@ function slwc_register_settings()
             return $input;
         }
     }]);
+    register_setting('slwc_settings_group', 'slwc_show_instant_prices');
 
     add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
-
-    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all product', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all products?', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all prducts?', 'sl-woocommerce-pricing'), 'slwc_show_instant_prices_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
     add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
@@ -125,6 +128,22 @@ function slwc_register_settings()
             <div class="row">
                 <div class="col">
                     <?php echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . $checked . '/>';
+                    ?>
+                </div>
+            </div>
+        </div>
+    <?php
+    }
+
+    function slwc_show_instant_prices_field()
+    {
+        $value = get_option('slwc_show_instant_prices');
+        $checked = $value ? 'checked' : '';
+    ?>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <?php echo '<input type="checkbox" value="1" name="slwc_show_instant_prices"' . $checked . '/>';
                     ?>
                 </div>
             </div>
@@ -166,6 +185,7 @@ function slwc_register_settings()
     {
         $payment_options = get_option('slwc_payment_options', []);
         $selected_banks = get_option('slwc_selected_banks', []);
+        $instalment_duration = [6, 12, 24, 36];
 
     ?>
         <div class="container">
@@ -180,8 +200,9 @@ function slwc_register_settings()
 
                 foreach ($selected_banks as $bank) {
                     $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
-                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : 0;
+                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
                     $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : 0;
+                    $hide_instant_price = get_option('slwc_show_instant_prices') ? '' : 'disabled';
 
                 ?>
                     <div class="col-12 col-md-4">
@@ -194,39 +215,44 @@ function slwc_register_settings()
                                     <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
                                     <div class="row mt-3">
-                                        <div class="col-12"> <label><small>Surcharge for 6 months Instalment Plans</small></label>
-
-                                            <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][6]" value="<?php echo esc_attr($instalment[6]) ?>" <?php
-                                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="" min="0">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                        <?php foreach ($instalment_duration as $month) { ?>
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-2">
+                                                        <input type="checkbox"
+                                                            name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][enabled]"
+                                                            <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? 'checked' : '' ?> />
+                                                    </div>
+                                                    <div class="col-10">
+                                                        <label><small>Surcharge <?php echo $month ?> months Instalment Plans</small></label>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3 input-group-sm">
+                                                    <input type="number"
+                                                        step="1"
+                                                        class="form-control"
+                                                        placeholder="Instalment"
+                                                        aria-label="Instalment Duration"
+                                                        aria-describedby="instalment-duration"
+                                                        name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][surcharge]"
+                                                        value="<?php echo esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
+                                                        <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
+                                                        echo $disabled ?>
+                                                        min="0">
+                                                    <span class="input-group-text" id="slwc_percentage">%</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12"> <label><small>Surcharge 12 months Instalment Plans</small></label>
+                                        <?php } ?>
 
-                                            <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][12]" value="<?php echo esc_attr($instalment[12]) ?>" <?php
-                                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="" min="0">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-2"> <label><small>Surcharge 24 months Instalment Plans</small></label>
-
-                                            <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" step="1" class="form-control" placeholder="Instalment" aria-label="Instalment Duration" aria-describedby="instalment-duration" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][24]" value="<?php echo esc_attr($instalment[24]) ?>" <?php
-                                                                                                                                                                                                                                                                                                                                echo $disabled ?> max="" min="0">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <p class="card-text mt-4">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers when they pay instantly</p>
+                                    <p class="card-text mt-4">Offer a special discount for <b><?php echo esc_html($bank) ?></b> customers when they pay instantly. <br> <small><i>Set the field to zero (0) if you don't want to show a special price for this bank.</i></small></p>
                                     <hr />
                                     <div class="row mt-1">
                                         <div class="col-12"> <label><small>Instant Payment Discount</small></label>
                                             <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>" <?php
-                                                                                                                                                                                                                                                                                                                            echo $disabled ?> max="100" min="0">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                                <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>"
+                                                    <?php echo $hide_instant_price ?> max=" 100" min="0">
+                                                <span class="input-group-text" id="slwc_percentage">%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -251,58 +277,88 @@ function slwc_display_banks_on_product_page()
     global $product;
 
     $banks = get_option('slwc_payment_options');
+    $enabled = get_option('slwc_enable_special_pricing');
+    $hide_instant_price = get_option('slwc_show_instant_prices') ? '' : 'disabled';
+
+    if ($enabled) {
+
     ?>
-    <div class="slwc-container slwc_mt_10">
-        <div class="slwc-row">
-            <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
-            <h5 class="slwc-bank-instant-pay-title">Spot Bank Payment Pricing</h5>
-            <?php
-            foreach ($banks as $bank => $bank_prices) {
-                if ($bank_prices && $bank_prices['instant'] != 0) {
-                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instant'] / 100));
-            ?>
+        <div class="slwc-container slwc_mt_10">
+            <div class="slwc-row">
+                <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
 
-                    <div class="slwc-col-sm-12 slwc-col-md-5">
-                        <div class="slwc-bank-plan slwc-bank-instant-price">
-                            <div class="slwc-bank-image-holder">
-                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                <?php
+                if (!$hide_instant_price):
+                    $has_banks_with_instant_pricing = false;
+
+                    foreach ($banks as $bank => $bank_prices) {
+                        if (!isset($bank_prices['instant']) || $bank_prices['instant'] == 0) {
+                            continue;
+                        }
+
+                        $has_banks_with_instant_pricing = true;
+                        $price = $product->get_price() - ($product->get_price() * ($bank_prices['instant'] / 100));
+                ?>
+                        <div class="slwc-col-sm-12 slwc-col-md-12 slwc-col-lg-5">
+                            <div class="slwc-bank-plan slwc-bank-instant-price">
+                                <div class="slwc-bank-discount-wrapper">
+                                    <p class="slwc-bank-discount-percentage">
+                                        <?php echo esc_html($bank_prices['instant'] . '% off'); ?>
+                                    </p>
+                                </div>
+                                <div class="slwc-bank-image-holder">
+                                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg'); ?>"
+                                        class="slwc-bank-image"
+                                        alt="<?php echo esc_attr($bank_prices['instant'] . '% off for ' . $bank . ' customers.'); ?>">
+                                </div>
+                                <p><b><?php echo wc_price($price); ?></b></p>
                             </div>
-                            <p><b><?php echo wc_price($price) ?></b></p>
                         </div>
-                    </div>
-            <?php
+                    <?php
+                    }
+                    if (!$has_banks_with_instant_pricing):
+                    ?>
+                    <?php endif; ?>
+
+                <?php else: ?>
+                <?php endif; ?>
+            </div>
+
+            <div class="slwc-row">
+                <h5 class="slwc-bank-instalment-title">Bank Specific Instalment Rates</h5>
+                <?php
+                foreach ($banks as $bank => $bank_prices) {
+                    if ($bank_prices && $bank_prices['instalment'] != 0) {
+                        $lastInstalmentValue = end($bank_prices['instalment']);
+                        $price = ($product->get_price() + ($product->get_price() * ($lastInstalmentValue / 100))) / array_key_last($bank_prices['instalment']);
+                ?>
+
+                        <div class="slwc-col-sm-12 slwc-col-md-5">
+                            <div class="slwc-bank-plan slwc-bank-instalment-price">
+                                <div class="slwc-bank-image-holder">
+                                    <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                </div>
+                                <p>
+                                    <b>
+                                        <?php echo wc_price($price) ?>
+                                    </b>
+                                    <br />
+                                    <span class="slwc-bank-instalment-month">per month for
+                                        <b>
+                                            <?php echo array_key_last($bank_prices['instalment']) ?> months
+                                        </b>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+            <?php }
                 }
-            } ?>
-
-        </div>
-        <div class="slwc-row">
-            <h5 class="slwc-bank-instalment-title">Bank Specific Instalment Rates</h5>
-            <?php
-            /**
-             * Stopped here
-             * Work on the logic to show the lowest monthly plan, aka the highest instalment plan
-             */
-            foreach ($banks as $bank => $bank_prices) {
-                if ($bank_prices && $bank_prices['instalment'] != 0) {
-                    $price = $product->get_price() - ($product->get_price() * ($bank_prices['instalment']['6'] / 100));
-            ?>
-
-                    <div class="slwc-col-sm-12 slwc-col-md-5">
-                        <div class="slwc-bank-plan slwc-bank-instalment-price">
-                            <div class="slwc-bank-image-holder">
-                                <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
-                            </div>
-                            <p>
-                                <?php echo wc_price($price) ?>/ per month for <?php echo $price ?> months</b>
-                            </p>
-                        </div>
-                    </div>
-        <?php }
+            } else {
+                return '';
             }
-        } ?>
+            ?>
+            </div>
         </div>
-    </div>
     <?php
-
-
-    add_action('woocommerce_single_product_summary', 'slwc_display_banks_on_product_page', 25);
+}
+add_action('woocommerce_single_product_summary', 'slwc_display_banks_on_product_page', 25);

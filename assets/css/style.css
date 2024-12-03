@@ -513,6 +513,205 @@
   }
 }
 
+@media (min-width: 992px) {
+  .slwc-col-lg-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .slwc-col-lg-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+
+  .slwc-col-lg-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .slwc-col-lg-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .slwc-col-lg-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .slwc-col-lg-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+
+  .slwc-col-lg-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .slwc-col-lg-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+
+  .slwc-col-lg-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .slwc-col-lg-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .slwc-col-lg-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .slwc-col-lg-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+
+  .slwc-col-lg-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+@media (min-width: 1200px) {
+  .slwc-col-xl-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .slwc-col-xl-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+
+  .slwc-col-xl-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .slwc-col-xl-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .slwc-col-xl-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .slwc-col-xl-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+
+  .slwc-col-xl-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .slwc-col-xl-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+
+  .slwc-col-xl-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .slwc-col-xl-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .slwc-col-xl-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .slwc-col-xl-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+
+  .slwc-col-xl-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+@media (min-width: 1400px) {
+  .slwc-col-xxl-auto {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .slwc-col-xxl-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+  }
+
+  .slwc-col-xxl-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+
+  .slwc-col-xxl-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+
+  .slwc-col-xxl-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+
+  .slwc-col-xxl-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+  }
+
+  .slwc-col-xxl-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+
+  .slwc-col-xxl-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+  }
+
+  .slwc-col-xxl-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+  }
+
+  .slwc-col-xxl-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+
+  .slwc-col-xxl-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+
+  .slwc-col-xxl-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+  }
+
+  .slwc-col-xxl-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
 /* Code taken from Bootstrap ends here */
 .slwc-bank-image-holder {
   max-width: 35%;
@@ -529,6 +728,9 @@
   padding: 5px 20px;
   margin-bottom: 20px;
   border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  position: relative;
+  text-align: right;
 }
 
 .slwc-bank-instalment-title {
@@ -537,4 +739,26 @@
 
 .slwc_mt_10 {
   margin-top: 4rem;
+}
+
+.slwc-bank-discount-wrapper {
+  position: absolute;
+  top: -14px;
+  right: 0px;
+  transform: translateY(0);
+  display: flex;
+  align-items: center;
+}
+
+.slwc-bank-discount-percentage {
+  font-size: small;
+  background-color: rgba(253, 253, 253, 0.8);
+  border-radius: 10px;
+  padding: 0px 7px;
+  border: 1px solid black;
+  white-space: nowrap;
+}
+
+.slwc-bank-instalment-month {
+  font-size: small;
 }
