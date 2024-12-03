@@ -15,9 +15,9 @@
  * Requires Plugins:  woocommerce
  */
 
-register_activation_hook(__FILE__, 'slwc_plugin_activation');
+register_activation_hook(__FILE__, 'slbp_plugin_activation');
 
-function slwc_plugin_activation()
+function slbp_plugin_activation()
 {
     if (!class_exists('woocommerce')) {
         deactivate_plugins(plugin_basename(__FILE__));
@@ -29,12 +29,12 @@ function slwc_plugin_activation()
         'default_installment_plans' => ''
     ];
 
-    add_option('slwc_plugin_options', $default_options);
+    add_option('slbp_plugin_options', $default_options);
 }
 
-add_action('admin_menu', 'slwc_add_admin_menu');
+add_action('admin_menu', 'slbp_add_admin_menu');
 
-function slwc_add_admin_menu()
+function slbp_add_admin_menu()
 {
     add_submenu_page(
         'woocommerce',
@@ -42,30 +42,30 @@ function slwc_add_admin_menu()
         'SL Bank Pricing for WooCommerce',
         'manage_options',
         'sl-bank-pricing',
-        'slwc_settings_page'
+        'slbp_settings_page'
     );
 }
 
-add_action('admin_enqueue_scripts', 'slwc_enqueue_admin_style');
-function slwc_enqueue_admin_style($hook)
+add_action('admin_enqueue_scripts', 'slbp_enqueue_admin_style');
+function slbp_enqueue_admin_style($hook)
 {
     if ($hook != 'woocommerce_page_sl-bank-pricing') {
         return;
     }
-    wp_enqueue_style('slwc_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
-    wp_enqueue_style('slwc_admin', plugin_dir_url(__FILE__) . 'assets/css/admin.css', ['slwc_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'assets/css/admin.css'));
-    wp_enqueue_script('slwc_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
-    wp_enqueue_script('slwc_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slwc_admin_bootstrap_bundle'], '2.9.2', true);
+    wp_enqueue_style('slbp_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
+    wp_enqueue_style('slbp_admin', plugin_dir_url(__FILE__) . 'assets/css/admin.css', ['slbp_admin_bootstrap'], filemtime(plugin_dir_path(__FILE__) . 'assets/css/admin.css'));
+    wp_enqueue_script('slbp_admin_bootstrap_bundle', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.0.2', true);
+    wp_enqueue_script('slbp_popper', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', ['slbp_admin_bootstrap_bundle'], '2.9.2', true);
 }
 
-add_action('wp_enqueue_scripts', 'slwc_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'slbp_enqueue_scripts');
 
-function slwc_enqueue_scripts($hook)
+function slbp_enqueue_scripts($hook)
 {
-    wp_enqueue_style('slwc', plugin_dir_url(__FILE__) . 'assets/css/style.css', [], filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css'));
+    wp_enqueue_style('slbp', plugin_dir_url(__FILE__) . 'assets/css/style.css', [], filemtime(plugin_dir_path(__FILE__) . 'assets/css/style.css'));
 }
 
-function slwc_settings_page()
+function slbp_settings_page()
 {
 ?>
     <div class="wrap">
@@ -73,7 +73,7 @@ function slwc_settings_page()
         <?php settings_errors(); ?>
         <form method="post" action="options.php">
             <?php
-            settings_fields('slwc_settings_group');
+            settings_fields('slbp_settings_group');
             do_settings_sections('sl-bank-pricing');
             submit_button();
             ?>
@@ -82,16 +82,16 @@ function slwc_settings_page()
     <?php
 }
 
-add_action('admin_init', 'slwc_register_settings');
-function slwc_register_settings()
+add_action('admin_init', 'slbp_register_settings');
+function slbp_register_settings()
 {
-    register_setting('slwc_settings_group', 'slwc_enable_special_pricing');
-    register_setting('slwc_settings_group', 'slwc_selected_banks', [
+    register_setting('slbp_settings_group', 'slbp_enable_special_pricing');
+    register_setting('slbp_settings_group', 'slbp_selected_banks', [
         'sanitize_callback' => function ($input) {
             return is_array($input) ? array_map('sanitize_text_field', $input) : [];
         }
     ]);
-    register_setting('slwc_settings_group', 'slwc_payment_options', ['sanitize_callback' => function ($input) {
+    register_setting('slbp_settings_group', 'slbp_payment_options', ['sanitize_callback' => function ($input) {
         if (is_array($input)) {
             foreach ($input as $key => $values) {
                 if (isset($values['instalment']) && is_array($values['instalment'])) {
@@ -109,27 +109,27 @@ function slwc_register_settings()
             return $input;
         }
     }]);
-    register_setting('slwc_settings_group', 'slwc_show_instant_prices');
-    register_setting('slwc_settings_group', 'slwc_front_end_message', ['sanitize_callback' => function ($input) {
+    register_setting('slbp_settings_group', 'slbp_show_instant_prices');
+    register_setting('slbp_settings_group', 'slbp_front_end_message', ['sanitize_callback' => function ($input) {
         return wp_kses_post($input);
     }]);
 
-    add_settings_section('slwc_general_settings', __('General Settings', 'sl-bank-pricing'), null, 'sl-bank-pricing');
-    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing'), 'slwc_enable_special_pricing_field', 'sl-bank-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing'), 'slwc_selected_banks_field', 'sl-bank-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing'), 'slwc_show_instant_prices_field', 'sl-bank-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing'), 'slwc_front_end_message_field', 'sl-bank-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing'), 'slwc_payment_options_field', 'sl-bank-pricing', 'slwc_general_settings');
+    add_settings_section('slbp_general_settings', __('General Settings', 'sl-bank-pricing'), null, 'sl-bank-pricing');
+    add_settings_field('slbp_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing'), 'slbp_enable_special_pricing_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing'), 'slbp_selected_banks_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing'), 'slbp_show_instant_prices_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing'), 'slbp_front_end_message_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing'), 'slbp_payment_options_field', 'sl-bank-pricing', 'slbp_general_settings');
 
-    function slwc_enable_special_pricing_field()
+    function slbp_enable_special_pricing_field()
     {
-        $value = get_option('slwc_enable_special_pricing');
+        $value = get_option('slbp_enable_special_pricing');
         $checked = $value ? 'checked' : '';
     ?>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <?php echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . esc_attr($checked) . '/>';
+                    <?php echo '<input type="checkbox" value="1" name="slbp_enable_special_pricing"' . esc_attr($checked) . '/>';
                     ?>
                 </div>
             </div>
@@ -137,15 +137,15 @@ function slwc_register_settings()
     <?php
     }
 
-    function slwc_show_instant_prices_field()
+    function slbp_show_instant_prices_field()
     {
-        $value = get_option('slwc_show_instant_prices');
+        $value = get_option('slbp_show_instant_prices');
         $checked = $value ? 'checked' : '';
     ?>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <?php echo '<input type="checkbox" value="1" name="slwc_show_instant_prices"' . esc_attr($checked) . '/>';
+                    <?php echo '<input type="checkbox" value="1" name="slbp_show_instant_prices"' . esc_attr($checked) . '/>';
                     ?>
                 </div>
             </div>
@@ -153,7 +153,7 @@ function slwc_register_settings()
     <?php
     }
 
-    function slwc_selected_banks_field()
+    function slbp_selected_banks_field()
     {
         $banks = [
             'Nations Trust Bank',
@@ -164,7 +164,7 @@ function slwc_register_settings()
             'Bank of Ceylon'
         ];
 
-        $selected_banks = get_option('slwc_selected_banks', []);
+        $selected_banks = get_option('slbp_selected_banks', []);
 
     ?>
         <div class="container">
@@ -172,7 +172,7 @@ function slwc_register_settings()
                 <?php foreach ($banks as $bank) { ?>
                     <div class="col-12">
                         <?php $checked = in_array($bank, $selected_banks) ? 'checked' : '';
-                        echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . esc_attr($checked) . ' />' . esc_html($bank) . '</label><br>';
+                        echo '<label><input type="checkbox" name="slbp_selected_banks[]" value="' . esc_attr($bank) . '"' . esc_attr($checked) . ' />' . esc_html($bank) . '</label><br>';
                         ?>
                     </div>
                 <?php } ?>
@@ -183,24 +183,24 @@ function slwc_register_settings()
 
     }
 
-    function slwc_front_end_message_field()
+    function slbp_front_end_message_field()
     { ?>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <label for="slwc_front_end_message" class="form-label">Enter your message here. <i><small>You can use HTML if you require</small></i></label>
-                    <textarea class="form-control" id="slwc_front_end_message" name="slwc_front_end_message" rows="3"><?php echo esc_textarea(get_option('slwc_front_end_message', 'Please <b>contact us</b> before placing an order if you want to use the special prices listed here.')) ?></textarea>
-                    <div id="slwc_front_end_message_help" class="form-text">An example would be: Please contact us on 077123456 before placing your order if you want to use the special prices mentioned</div>
+                    <label for="slbp_front_end_message" class="form-label">Enter your message here. <i><small>You can use HTML if you require</small></i></label>
+                    <textarea class="form-control" id="slbp_front_end_message" name="slbp_front_end_message" rows="3"><?php echo esc_textarea(get_option('slbp_front_end_message', 'Please <b>contact us</b> before placing an order if you want to use the special prices listed here.')) ?></textarea>
+                    <div id="slbp_front_end_message_help" class="form-text">An example would be: Please contact us on 077123456 before placing your order if you want to use the special prices mentioned</div>
                 </div>
             </div>
         </div>
     <?php
     }
 
-    function slwc_payment_options_field()
+    function slbp_payment_options_field()
     {
-        $payment_options = get_option('slwc_payment_options', []);
-        $selected_banks = get_option('slwc_selected_banks', []);
+        $payment_options = get_option('slbp_payment_options', []);
+        $selected_banks = get_option('slbp_selected_banks', []);
         $instalment_duration = [6, 12, 24, 36];
 
     ?>
@@ -218,15 +218,15 @@ function slwc_register_settings()
                     $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
                     $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
                     $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : 0;
-                    $hide_instant_price = get_option('slwc_show_instant_prices') ? '' : 'disabled';
+                    $hide_instant_price = get_option('slbp_show_instant_prices') ? '' : 'disabled';
 
                 ?>
                     <div class="col-12 col-md-4">
-                        <div class="slwc_bank_settings" name="<?php echo esc_attr($bank); ?>">
+                        <div class="slbp_bank_settings" name="<?php echo esc_attr($bank); ?>">
                             <div class="card" <?php echo esc_attr($disabled) ?>>
                                 <div class="card-body">
-                                    <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                    <div class="slbp-bank-image-holder">
+                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
@@ -236,7 +236,7 @@ function slwc_register_settings()
                                                 <div class="row">
                                                     <div class="col-2">
                                                         <input type="checkbox"
-                                                            name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][enabled]"
+                                                            name="slbp_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][enabled]"
                                                             <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? 'checked' : '' ?> />
                                                     </div>
                                                     <div class="col-10">
@@ -250,12 +250,12 @@ function slwc_register_settings()
                                                         placeholder="Instalment"
                                                         aria-label="Instalment Duration"
                                                         aria-describedby="instalment-duration"
-                                                        name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][surcharge]"
+                                                        name="slbp_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][surcharge]"
                                                         value="<?php echo isset($instalment[$month]['surcharge']) ? esc_attr($instalment[$month]['surcharge']) : '' ?>"
                                                         <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
                                                         echo esc_attr($disabled) ?>
                                                         min="0">
-                                                    <span class="input-group-text" id="slwc_percentage">%</span>
+                                                    <span class="input-group-text" id="slbp_percentage">%</span>
                                                 </div>
                                             </div>
                                         <?php } ?>
@@ -266,9 +266,9 @@ function slwc_register_settings()
                                     <div class="row mt-1">
                                         <div class="col-12"> <label><small>Instant Payment Discount</small></label>
                                             <div class="input-group mb-3 input-group-sm">
-                                                <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>"
+                                                <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slbp_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>"
                                                     <?php echo esc_attr($hide_instant_price) ?> max=" 100" min="0">
-                                                <span class="input-group-text" id="slwc_percentage">%</span>
+                                                <span class="input-group-text" id="slbp_percentage">%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -288,25 +288,25 @@ function slwc_register_settings()
     }
 }
 
-function slwc_display_banks_on_product_page()
+function slbp_display_banks_on_product_page()
 {
     global $product;
 
-    $banks = get_option('slwc_payment_options');
-    $enabled = get_option('slwc_enable_special_pricing');
-    $hide_instant_price = get_option('slwc_show_instant_prices') ? '' : 'disabled';
+    $banks = get_option('slbp_payment_options');
+    $enabled = get_option('slbp_enable_special_pricing');
+    $hide_instant_price = get_option('slbp_show_instant_prices') ? '' : 'disabled';
 
     if ($enabled) {
 
     ?>
-        <div class="slwc-container slwc_mt_10">
-            <div class="slwc-row">
-                <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
+        <div class="slbp-container slbp_mt_10">
+            <div class="slbp-row">
+                <h4 class="slbp-main-title">Bank-Specific Pricing Options</h4>
                 <?php
-                $front_end_message = get_option('slwc_front_end_message', '');
+                $front_end_message = get_option('slbp_front_end_message', '');
 
                 if (!empty($front_end_message)) {
-                    echo '<p class="slwc-custom-message">Note: ' . wp_kses_post($front_end_message) . '</p>';
+                    echo '<p class="slbp-custom-message">Note: ' . wp_kses_post($front_end_message) . '</p>';
                 }
                 if (!$hide_instant_price):
                     $has_banks_with_instant_pricing = false;
@@ -319,16 +319,16 @@ function slwc_display_banks_on_product_page()
                         $has_banks_with_instant_pricing = true;
                         $price = $product->get_price() - ($product->get_price() * ($bank_prices['instant'] / 100));
                 ?>
-                        <div class="slwc-col-sm-12 slwc-col-md-12 slwc-col-lg-5">
-                            <div class="slwc-bank-plan slwc-bank-instant-price">
-                                <div class="slwc-bank-discount-wrapper">
-                                    <p class="slwc-bank-discount-percentage">
+                        <div class="slbp-col-sm-12 slbp-col-md-12 slbp-col-lg-5">
+                            <div class="slbp-bank-plan slbp-bank-instant-price">
+                                <div class="slbp-bank-discount-wrapper">
+                                    <p class="slbp-bank-discount-percentage">
                                         <?php echo esc_html($bank_prices['instant'] . '% off'); ?>
                                     </p>
                                 </div>
-                                <div class="slwc-bank-image-holder">
+                                <div class="slbp-bank-image-holder">
                                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg'); ?>"
-                                        class="slwc-bank-image"
+                                        class="slbp-bank-image"
                                         alt="<?php echo esc_attr($bank_prices['instant'] . '% off for ' . $bank . ' customers.'); ?>">
                                 </div>
                                 <p><b><?php echo wp_kses_post(wc_price($price)); ?></b></p>
@@ -344,8 +344,8 @@ function slwc_display_banks_on_product_page()
                 <?php endif; ?>
             </div>
 
-            <div class="slwc-row">
-                <h5 class="slwc-bank-instalment-title">Bank Specific Instalment Rates</h5>
+            <div class="slbp-row">
+                <h5 class="slbp-bank-instalment-title">Bank Specific Instalment Rates</h5>
                 <?php
                 foreach ($banks as $bank => $bank_prices) {
                     if ($bank_prices && isset($bank_prices['instalment']) && is_array($bank_prices['instalment'])) {
@@ -359,17 +359,17 @@ function slwc_display_banks_on_product_page()
                             $price = ($product->get_price() + ($product->get_price() * ($highest_instalment['surcharge'] / 100))) / $highest_duration;
 
                 ?>
-                            <div class="slwc-col-sm-12 slwc-col-md-5">
-                                <div class="slwc-bank-plan slwc-bank-instalment-price">
-                                    <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                            <div class="slbp-col-sm-12 slbp-col-md-5">
+                                <div class="slbp-bank-plan slbp-bank-instalment-price">
+                                    <div class="slbp-bank-image-holder">
+                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p>
                                         <b>
                                             <?php echo wp_kses_post(wc_price($price)) ?>
                                         </b>
                                         <br />
-                                        <span class="slwc-bank-instalment-month">per month for
+                                        <span class="slbp-bank-instalment-month">per month for
                                             <b>
                                                 <?php echo esc_attr(array_key_last($bank_prices['instalment'])) ?> months
                                             </b>
@@ -389,4 +389,4 @@ function slwc_display_banks_on_product_page()
         </div>
     <?php
 }
-add_action('woocommerce_single_product_summary', 'slwc_display_banks_on_product_page', 25);
+add_action('woocommerce_single_product_summary', 'slbp_display_banks_on_product_page', 25);
