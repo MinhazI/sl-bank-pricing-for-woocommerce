@@ -329,7 +329,7 @@ function slwc_display_banks_on_product_page()
                                     </p>
                                 </div>
                                 <div class="slwc-bank-image-holder">
-                                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg'); ?>"
+                                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg'); ?>"
                                         class="slwc-bank-image"
                                         alt="<?php echo esc_attr($bank_prices['instant'] . '% off for ' . $bank . ' customers.'); ?>">
                                 </div>
@@ -364,7 +364,7 @@ function slwc_display_banks_on_product_page()
                             <div class="slwc-col-sm-12 slwc-col-md-5">
                                 <div class="slwc-bank-plan slwc-bank-instalment-price">
                                     <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p>
                                         <b>
