@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Plugin Name:       SL WooCommerce Pricing
- * Plugin URI:        https://minhazimohamed.com/sl-woocommerce-pricing/
- * Description:       Enhance your WooCommerce store with SL WooCommerce Pricing—customize special pricing and installment plans for Sri Lankan bank customers. Boost sales with localized payment options tailored for Sri Lanka.
+ * Plugin Name:       SL Bank Pricing for WooCommerce
+ * Plugin URI:        https://minhazimohamed.com/sl-bank-pricing-for-woocommerce/
+ * Description:       Enhance your WooCommerce store with SL Bank Pricing for WooCommerce special pricing and installment plans for Sri Lankan bank customers. Boost sales with localized payment options tailored for Sri Lanka.
  * Version:           0.1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -11,8 +11,7 @@
  * Author URI:        https://minhazimohamed.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI:        https://minhazimohamed.com/sl-woocommerce-pricing/
- * Text Domain:       sl-woocommerce-pricing
+ * Text Domain:       sl-bank-pricing
  * Requires Plugins:  woocommerce
  */
 
@@ -22,7 +21,7 @@ function slwc_plugin_activation()
 {
     if (!class_exists('woocommerce')) {
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die('SL WooCommerce Pricing plugin requires WooCommerce to be installed and activated. Please install and activate WooCommerce first');
+        wp_die('SL Bank Pricing for WooCommerce plugin requires WooCommerce to be installed and activated. Please install and activate WooCommerce first');
     }
 
     $default_options = [
@@ -39,10 +38,10 @@ function slwc_add_admin_menu()
 {
     add_submenu_page(
         'woocommerce',
-        'SL WooCommerce Pricing',
-        'SL WooCommerce Pricing',
+        'SL Bank Pricing for WooCommerce',
+        'SL Bank Pricing for WooCommerce',
         'manage_options',
-        'sl-woocommerce-pricing',
+        'sl-bank-pricing',
         'slwc_settings_page'
     );
 }
@@ -50,7 +49,7 @@ function slwc_add_admin_menu()
 add_action('admin_enqueue_scripts', 'slwc_enqueue_admin_style');
 function slwc_enqueue_admin_style($hook)
 {
-    if ($hook != 'woocommerce_page_sl-woocommerce-pricing') {
+    if ($hook != 'woocommerce_page_sl-bank-pricing') {
         return;
     }
     wp_enqueue_style('slwc_admin_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', [], '5.0.2');
@@ -70,12 +69,12 @@ function slwc_settings_page()
 {
 ?>
     <div class="wrap">
-        <h1><?php esc_html_e('SL WooCommerce Pricing Settings', 'sl-woocommerce-pricing'); ?></h1>
+        <h1><?php esc_html_e('SL Bank Pricing for WooCommerce Settings', 'sl-bank-pricing'); ?></h1>
         <?php settings_errors(); ?>
         <form method="post" action="options.php">
             <?php
             settings_fields('slwc_settings_group');
-            do_settings_sections('sl-woocommerce-pricing');
+            do_settings_sections('sl-bank-pricing');
             submit_button();
             ?>
         </form>
@@ -115,12 +114,12 @@ function slwc_register_settings()
         return wp_kses_post($input);
     }]);
 
-    add_settings_section('slwc_general_settings', __('General Settings', 'sl-woocommerce-pricing'), null, 'sl-woocommerce-pricing');
-    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all products?', 'sl-woocommerce-pricing'), 'slwc_enable_special_pricing_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-woocommerce-pricing'), 'slwc_selected_banks_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all products?', 'sl-woocommerce-pricing'), 'slwc_show_instant_prices_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_front_end_message', __('Show a message to your customers about these prices', 'sl-woocommerce-pricing'), 'slwc_front_end_message_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
-    add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-woocommerce-pricing'), 'slwc_payment_options_field', 'sl-woocommerce-pricing', 'slwc_general_settings');
+    add_settings_section('slwc_general_settings', __('General Settings', 'sl-bank-pricing'), null, 'sl-bank-pricing');
+    add_settings_field('slwc_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing'), 'slwc_enable_special_pricing_field', 'sl-bank-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing'), 'slwc_selected_banks_field', 'sl-bank-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing'), 'slwc_show_instant_prices_field', 'sl-bank-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing'), 'slwc_front_end_message_field', 'sl-bank-pricing', 'slwc_general_settings');
+    add_settings_field('slwc_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing'), 'slwc_payment_options_field', 'sl-bank-pricing', 'slwc_general_settings');
 
     function slwc_enable_special_pricing_field()
     {
@@ -252,7 +251,7 @@ function slwc_register_settings()
                                                         aria-label="Instalment Duration"
                                                         aria-describedby="instalment-duration"
                                                         name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][surcharge]"
-                                                        value="<?php echo isset($instalment[$month]['surcharge']) && esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
+                                                        value="<?php echo isset($instalment[$month]['surcharge']) ? esc_attr($instalment[$month]['surcharge']) : '' ?>"
                                                         <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
                                                         echo esc_attr($disabled) ?>
                                                         min="0">
@@ -268,7 +267,7 @@ function slwc_register_settings()
                                         <div class="col-12"> <label><small>Instant Payment Discount</small></label>
                                             <div class="input-group mb-3 input-group-sm">
                                                 <input type="number" step="0.1" class="form-control" placeholder="Instant" aria-label="Instant Payment Discount" aria-describedby="instant-payment-discount" name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instant]" value="<?php echo esc_attr($instant) ?>"
-                                                    <?php echo $hide_instant_price ?> max=" 100" min="0">
+                                                    <?php echo esc_attr($hide_instant_price) ?> max=" 100" min="0">
                                                 <span class="input-group-text" id="slwc_percentage">%</span>
                                             </div>
                                         </div>
@@ -332,7 +331,7 @@ function slwc_display_banks_on_product_page()
                                         class="slwc-bank-image"
                                         alt="<?php echo esc_attr($bank_prices['instant'] . '% off for ' . $bank . ' customers.'); ?>">
                                 </div>
-                                <p><b><?php echo wc_price($price); ?></b></p>
+                                <p><b><?php echo wp_kses_post(wc_price($price)); ?></b></p>
                             </div>
                         </div>
                     <?php
@@ -363,16 +362,16 @@ function slwc_display_banks_on_product_page()
                             <div class="slwc-col-sm-12 slwc-col-md-5">
                                 <div class="slwc-bank-plan slwc-bank-instalment-price">
                                     <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p>
                                         <b>
-                                            <?php echo wc_price($price) ?>
+                                            <?php echo wp_kses_post(wc_price($price)) ?>
                                         </b>
                                         <br />
                                         <span class="slwc-bank-instalment-month">per month for
                                             <b>
-                                                <?php echo array_key_last($bank_prices['instalment']) ?> months
+                                                <?php echo esc_attr(array_key_last($bank_prices['instalment'])) ?> months
                                             </b>
                                         </span>
                                     </p>
