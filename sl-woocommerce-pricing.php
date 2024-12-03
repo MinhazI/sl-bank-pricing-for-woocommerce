@@ -130,7 +130,7 @@ function slwc_register_settings()
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <?php echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . $checked . '/>';
+                    <?php echo '<input type="checkbox" value="1" name="slwc_enable_special_pricing"' . esc_attr($checked) . '/>';
                     ?>
                 </div>
             </div>
@@ -173,7 +173,7 @@ function slwc_register_settings()
                 <?php foreach ($banks as $bank) { ?>
                     <div class="col-12">
                         <?php $checked = in_array($bank, $selected_banks) ? 'checked' : '';
-                        echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . $checked . ' />' . esc_html($bank) . '</label><br>';
+                        echo '<label><input type="checkbox" name="slwc_selected_banks[]" value="' . esc_attr($bank) . '"' . esc_attr($checked) . ' />' . esc_html($bank) . '</label><br>';
                         ?>
                     </div>
                 <?php } ?>
@@ -224,10 +224,10 @@ function slwc_register_settings()
                 ?>
                     <div class="col-12 col-md-4">
                         <div class="slwc_bank_settings" name="<?php echo esc_attr($bank); ?>">
-                            <div class="card" <?php echo $disabled ?>>
+                            <div class="card" <?php echo esc_attr($disabled) ?>>
                                 <div class="card-body">
                                     <div class="slwc-bank-image-holder">
-                                        <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
@@ -254,7 +254,7 @@ function slwc_register_settings()
                                                         name="slwc_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo $month ?>][surcharge]"
                                                         value="<?php echo isset($instalment[$month]['surcharge']) && esc_attr($instalment[$month]['surcharge']) ?? '' ?>"
                                                         <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
-                                                        echo $disabled ?>
+                                                        echo esc_attr($disabled) ?>
                                                         min="0">
                                                     <span class="input-group-text" id="slwc_percentage">%</span>
                                                 </div>
