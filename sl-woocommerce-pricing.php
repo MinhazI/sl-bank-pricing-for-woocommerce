@@ -328,30 +328,38 @@ function slwc_display_banks_on_product_page()
                 <h5 class="slwc-bank-instalment-title">Bank Specific Instalment Rates</h5>
                 <?php
                 foreach ($banks as $bank => $bank_prices) {
-                    if ($bank_prices && $bank_prices['instalment'] != 0) {
-                        $lastInstalmentValue = end($bank_prices['instalment']);
-                        $price = ($product->get_price() + ($product->get_price() * ($lastInstalmentValue / 100))) / array_key_last($bank_prices['instalment']);
-                ?>
+                    if ($bank_prices && isset($bank_prices['instalment']) && is_array($bank_prices['instalment'])) {
+                        $enabled_instalments = array_filter($bank_prices['instalment'], function ($details) {
+                            return isset($details['enabled']) && $details['enabled'];
+                        });
 
-                        <div class="slwc-col-sm-12 slwc-col-md-5">
-                            <div class="slwc-bank-plan slwc-bank-instalment-price">
-                                <div class="slwc-bank-image-holder">
-                                    <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
-                                </div>
-                                <p>
-                                    <b>
-                                        <?php echo wc_price($price) ?>
-                                    </b>
-                                    <br />
-                                    <span class="slwc-bank-instalment-month">per month for
+                        if (!empty($enabled_instalments)) {
+                            $highest_duration = max(array_keys($enabled_instalments));
+                            $highest_instalment = $enabled_instalments[$highest_duration];
+                            $price = ($product->get_price() + ($product->get_price() * ($highest_instalment['surcharge'] / 100))) / $highest_duration;
+
+                ?>
+                            <div class="slwc-col-sm-12 slwc-col-md-5">
+                                <div class="slwc-bank-plan slwc-bank-instalment-price">
+                                    <div class="slwc-bank-image-holder">
+                                        <img src="<?php echo plugin_dir_url(__FILE__) . '/assets/images/' . esc_attr($bank) . '.jpg' ?>" class="card-img-top slwc-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                    </div>
+                                    <p>
                                         <b>
-                                            <?php echo array_key_last($bank_prices['instalment']) ?> months
+                                            <?php echo wc_price($price) ?>
                                         </b>
-                                    </span>
-                                </p>
+                                        <br />
+                                        <span class="slwc-bank-instalment-month">per month for
+                                            <b>
+                                                <?php echo array_key_last($bank_prices['instalment']) ?> months
+                                            </b>
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-            <?php }
+            <?php
+                        }
+                    }
                 }
             } else {
                 return '';
