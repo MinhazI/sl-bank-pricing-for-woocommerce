@@ -304,11 +304,12 @@ function slwc_display_banks_on_product_page()
         <div class="slwc-container slwc_mt_10">
             <div class="slwc-row">
                 <h4 class="slwc-main-title">Bank-Specific Pricing Options</h4>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
-                    Tooltip on top
-                </button>
-
                 <?php
+                $front_end_message = get_option('slwc_front_end_message', '');
+
+                if (!empty($front_end_message)) {
+                    echo '<p class="slwc-custom-message">Note: ' . wp_kses_post($front_end_message) . '</p>';
+                }
                 if (!$hide_instant_price):
                     $has_banks_with_instant_pricing = false;
 
