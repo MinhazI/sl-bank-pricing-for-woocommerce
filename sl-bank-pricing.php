@@ -326,7 +326,7 @@ function slbp_display_banks_on_product_page()
                                     </p>
                                 </div>
                                 <div class="slbp-bank-image-holder">
-                                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', sanitize_file_name($bank)) . '.jpg'); ?>"
+                                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg'); ?>"
                                         class="slbp-bank-image"
                                         alt="<?php echo esc_attr($bank_prices['instant'] . '% off for ' . $bank . ' customers.'); ?>">
                                 </div>
