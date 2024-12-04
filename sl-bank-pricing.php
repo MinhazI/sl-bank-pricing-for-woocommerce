@@ -225,7 +225,7 @@ function slbp_register_settings()
                             <div class="card" <?php echo esc_attr($disabled) ?>>
                                 <div class="card-body">
                                     <div class="slbp-bank-image-holder">
-                                        <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', sanitize_file_name($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
+                                        <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
                                     <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
