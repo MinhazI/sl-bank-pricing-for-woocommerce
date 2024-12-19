@@ -1,5 +1,5 @@
 === SL Bank Pricing for WooCommerce ===
-Contributors: Minhaz Irphan Mohamed
+Contributors: minhazmohamed
 Donate link: https://minhazimohamed.com
 Tags: WooCommerce, Sri Lanka, Pricing, Installments
 Requires at least: 5.8
