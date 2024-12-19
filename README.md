@@ -22,6 +22,18 @@ With **SL Bank Pricing for WooCommerce**, store owners can:
 
 The plugin is user-friendly and integrates fully with WooCommerce's existing pricing and checkout systems, making it easier for customers to view and use special pricing based on their bank.
 
+## Screenshots
+
+1. **Configure Installment and Instant Pricing**  
+   Admin view for setting up special pricing options for different Sri Lankan banks.
+
+   ![Screenshot of settings panel](assets/screenshot-1.png)
+
+2. **Product Page View**  
+   Front-end view of the special pricing and installment options displayed to customers.
+
+   ![Screenshot of product page](assets/screenshot-2.png)
+
 ## Installation
 
 1. **From the WordPress Dashboard**:
