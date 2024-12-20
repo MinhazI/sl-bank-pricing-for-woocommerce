@@ -4,7 +4,7 @@
  * Plugin Name:       SL Bank Pricing for WooCommerce
  * Plugin URI:        https://minhazimohamed.com/sl-bank-pricing-for-woocommerce/
  * Description:       Enhance your WooCommerce store with SL Bank Pricing for WooCommerce special pricing and installment plans for Sri Lankan bank customers. Boost sales with localized payment options tailored for Sri Lanka.
- * Version:           1.0.1
+ * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Minhaz Irphan Mohamed

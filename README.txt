@@ -5,7 +5,7 @@ Tags: WooCommerce, Sri Lanka, Pricing, Installments
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,7 +97,3 @@ Only when **Special Pricing** is enabled. Regular pricing remains unaffected oth
 ### 1.0.0
 
 - Initial release.
-
-## License
-
-This plugin is licensed under the [GPL-2.0 License](https://www.gnu.org/licenses/gpl-2.0.html). You are free to modify and redistribute the plugin under the terms of this license.
