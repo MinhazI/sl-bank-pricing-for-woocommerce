@@ -1,14 +1,3 @@
-=== SL Bank Pricing for WooCommerce ===
-Contributors: minhazmohamed
-Donate link: https://minhazimohamed.com
-Tags: WooCommerce, Sri Lanka, Pricing, Installments
-Requires at least: 5.8
-Tested up to: 6.7
-Requires PHP: 7.4
-Stable tag: 1.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-
 # SL Bank Pricing for WooCommerce
 
 **SL Bank Pricing for WooCommerce** is a plugin that allows WooCommerce store admins to offer special pricing and installment plans for Sri Lankan bank customers. This plugin integrates seamlessly with WooCommerce, enabling custom pricing options for specific banks, including installment and instant payment plans.
@@ -43,7 +32,7 @@ The plugin is user-friendly and integrates fully with WooCommerce's existing pri
    - Click **Install Now**, and then **Activate**.
 
 2. **Manual Installation**:
-   - Download the plugin ZIP file from the WordPress plugin repository.
+   - Download the plugin ZIP file from the WordPress plugin repository: https://wordpress.org/plugins/sl-bank-pricing-for-woocommerce/.
    - Upload the ZIP file via **Plugins > Add New > Upload Plugin** in your WordPress dashboard.
    - Activate the plugin.
 
