@@ -97,14 +97,14 @@ function slbp_register_settings()
     register_setting('slbp_settings_group', 'slbp_payment_options', ['sanitize_callback' => function ($input) {
         if (is_array($input)) {
             foreach ($input as $key => $values) {
-                if (isset($values['instalment']) && is_array($values['instalment'])) {
-                    foreach ($values['instalment'] as $duration => $details) {
+                if (isset($values['installment']) && is_array($values['installment'])) {
+                    foreach ($values['installment'] as $duration => $details) {
                         $surcharge = isset($details['surcharge']) ? floatval($details['surcharge']) : 0;
                         $enabled = isset($details['enabled']) ? filter_var($details['enabled'], FILTER_VALIDATE_BOOLEAN) : false;
-                        $input[$key]['instalment'][$duration] = ['surcharge' => $surcharge, 'enabled' => $enabled];
+                        $input[$key]['installment'][$duration] = ['surcharge' => $surcharge, 'enabled' => $enabled];
                     }
                 } else {
-                    $input[$key]['instalment'] = [];
+                    $input[$key]['installment'] = [];
                 }
                 $input[$key]['instant'] = isset($values['instant']) ? floatval($values['instant']) : 0;
             }
@@ -121,10 +121,10 @@ function slbp_register_settings()
 
     add_settings_section('slbp_general_settings', __('General Settings', 'sl-bank-pricing-for-woocommerce'), null, 'sl-bank-pricing');
     add_settings_field('slbp_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing-for-woocommerce'), 'slbp_enable_special_pricing_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing-for-woocommerce'), 'slbp_selected_banks_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_selected_banks', __('Select banks for installment plans', 'sl-bank-pricing-for-woocommerce'), 'slbp_selected_banks_field', 'sl-bank-pricing', 'slbp_general_settings');
     add_settings_field('slbp_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing-for-woocommerce'), 'slbp_show_instant_prices_field', 'sl-bank-pricing', 'slbp_general_settings');
     add_settings_field('slbp_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing-for-woocommerce'), 'slbp_front_end_message_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing-for-woocommerce'), 'slbp_payment_options_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_payment_options', __('Configure installment plans and discounts for each bank', 'sl-bank-pricing-for-woocommerce'), 'slbp_payment_options_field', 'sl-bank-pricing', 'slbp_general_settings');
 
     function slbp_enable_special_pricing_field()
     {
@@ -221,7 +221,7 @@ function slbp_register_settings()
 
                 foreach ($selected_banks as $bank) {
                     $disabled = in_array($bank, $selected_banks) ? '' : 'disabled';
-                    $instalment = isset($payment_options[$bank]['instalment']) ? $payment_options[$bank]['instalment'] : '';
+                    $installment = isset($payment_options[$bank]['installment']) ? $payment_options[$bank]['installment'] : '';
                     $instant = isset($payment_options[$bank]['instant']) ? $payment_options[$bank]['instant'] : 0;
                     $hide_instant_price = get_option('slbp_show_instant_prices') ? '' : 'disabled';
 
@@ -241,11 +241,11 @@ function slbp_register_settings()
                                                 <div class="row">
                                                     <div class="col-2">
                                                         <input type="checkbox"
-                                                            name="slbp_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][enabled]"
-                                                            <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? 'checked' : '' ?> />
+                                                            name="slbp_payment_options[<?php echo esc_attr($bank) ?>][installment][<?php echo esc_attr($month) ?>][enabled]"
+                                                            <?php echo isset($installment[$month]['enabled']) && $installment[$month]['enabled'] ? 'checked' : '' ?> />
                                                     </div>
                                                     <div class="col-10">
-                                                        <label><small>Surcharge <?php echo esc_attr($month) ?> months instalment plans</small></label>
+                                                        <label><small>Surcharge <?php echo esc_attr($month) ?> months installment plans</small></label>
                                                     </div>
                                                 </div>
                                                 <div class="input-group mb-3 input-group-sm">
@@ -254,10 +254,10 @@ function slbp_register_settings()
                                                         class="form-control"
                                                         placeholder="Instalment"
                                                         aria-label="Instalment Duration"
-                                                        aria-describedby="instalment-duration"
-                                                        name="slbp_payment_options[<?php echo esc_attr($bank) ?>][instalment][<?php echo esc_attr($month) ?>][surcharge]"
-                                                        value="<?php echo isset($instalment[$month]['surcharge']) ? esc_attr($instalment[$month]['surcharge']) : '' ?>"
-                                                        <?php echo isset($instalment[$month]['enabled']) && $instalment[$month]['enabled'] ? '' : 'disabled';
+                                                        aria-describedby="installment-duration"
+                                                        name="slbp_payment_options[<?php echo esc_attr($bank) ?>][installment][<?php echo esc_attr($month) ?>][surcharge]"
+                                                        value="<?php echo isset($installment[$month]['surcharge']) ? esc_attr($installment[$month]['surcharge']) : '' ?>"
+                                                        <?php echo isset($installment[$month]['enabled']) && $installment[$month]['enabled'] ? '' : 'disabled';
                                                         echo esc_attr($disabled) ?>
                                                         min="0">
                                                     <span class="input-group-text" id="slbp_percentage">%</span>
@@ -350,11 +350,11 @@ function slbp_display_banks_on_product_page()
             </div>
 
             <div class="slbp-row">
-                <h5 class="slbp-bank-instalment-title">Bank Specific Instalment Rates</h5>
+                <h5 class="slbp-bank-installment-title">Bank Specific Instalment Rates</h5>
                 <?php
                 foreach ($banks as $bank => $bank_prices) {
-                    if ($bank_prices && isset($bank_prices['instalment']) && is_array($bank_prices['instalment'])) {
-                        $enabled_instalments = array_filter($bank_prices['instalment'], function ($details) {
+                    if ($bank_prices && isset($bank_prices['installment']) && is_array($bank_prices['installment'])) {
+                        $enabled_instalments = array_filter($bank_prices['installment'], function ($details) {
                             return isset($details['enabled']) && $details['enabled'];
                         });
 
@@ -365,7 +365,7 @@ function slbp_display_banks_on_product_page()
 
                 ?>
                             <div class="slbp-col-sm-12 slbp-col-md-5">
-                                <div class="slbp-bank-plan slbp-bank-instalment-price">
+                                <div class="slbp-bank-plan slbp-bank-installment-price">
                                     <div class="slbp-bank-image-holder">
                                         <img src="<?php echo esc_attr(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
@@ -374,9 +374,9 @@ function slbp_display_banks_on_product_page()
                                             <?php echo wp_kses_post(wc_price($price)) ?>
                                         </b>
                                         <br />
-                                        <span class="slbp-bank-instalment-month">per month for
+                                        <span class="slbp-bank-installment-month">per month for
                                             <b>
-                                                <?php echo esc_attr(array_key_last($bank_prices['instalment'])) ?> months
+                                                <?php echo esc_attr(array_key_last($bank_prices['installment'])) ?> months
                                             </b>
                                         </span>
                                     </p>
