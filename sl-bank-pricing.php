@@ -206,7 +206,7 @@ function slbp_register_settings()
     {
         $payment_options = get_option('slbp_payment_options', []);
         $selected_banks = get_option('slbp_selected_banks', []);
-        $instalment_duration = [6, 12, 24, 36];
+        $installment_duration = [6, 12, 24, 36];
 
     ?>
         <div class="container">
@@ -233,10 +233,10 @@ function slbp_register_settings()
                                     <div class="slbp-bank-image-holder">
                                         <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . 'assets/images/' . str_replace(' ', '_', esc_attr($bank)) . '.jpg') ?>" class="card-img-top slbp-bank-image" alt="<?php echo esc_attr($bank); ?>">
                                     </div>
-                                    <p class="card-text mt-4">Offer instalments for <b><?php echo esc_html($bank) ?></b> customers</p>
+                                    <p class="card-text mt-4">Offer installments for <b><?php echo esc_html($bank) ?></b> customers</p>
                                     <hr />
                                     <div class="row mt-3">
-                                        <?php foreach ($instalment_duration as $month) { ?>
+                                        <?php foreach ($installment_duration as $month) { ?>
                                             <div class="col-12">
                                                 <div class="row">
                                                     <div class="col-2">
@@ -252,8 +252,8 @@ function slbp_register_settings()
                                                     <input type="number"
                                                         step="1"
                                                         class="form-control"
-                                                        placeholder="Instalment"
-                                                        aria-label="Instalment Duration"
+                                                        placeholder="Installment"
+                                                        aria-label="Installment Duration"
                                                         aria-describedby="installment-duration"
                                                         name="slbp_payment_options[<?php echo esc_attr($bank) ?>][installment][<?php echo esc_attr($month) ?>][surcharge]"
                                                         value="<?php echo isset($installment[$month]['surcharge']) ? esc_attr($installment[$month]['surcharge']) : '' ?>"
@@ -350,18 +350,18 @@ function slbp_display_banks_on_product_page()
             </div>
 
             <div class="slbp-row">
-                <h5 class="slbp-bank-installment-title">Bank Specific Instalment Rates</h5>
+                <h5 class="slbp-bank-installment-title">Bank Specific Installment Rates</h5>
                 <?php
                 foreach ($banks as $bank => $bank_prices) {
                     if ($bank_prices && isset($bank_prices['installment']) && is_array($bank_prices['installment'])) {
-                        $enabled_instalments = array_filter($bank_prices['installment'], function ($details) {
+                        $enabled_installments = array_filter($bank_prices['installment'], function ($details) {
                             return isset($details['enabled']) && $details['enabled'];
                         });
 
-                        if (!empty($enabled_instalments)) {
-                            $highest_duration = max(array_keys($enabled_instalments));
-                            $highest_instalment = $enabled_instalments[$highest_duration];
-                            $price = ($product->get_price() + ($product->get_price() * ($highest_instalment['surcharge'] / 100))) / $highest_duration;
+                        if (!empty($enabled_installments)) {
+                            $highest_duration = max(array_keys($enabled_installments));
+                            $highest_installment = $enabled_installments[$highest_duration];
+                            $price = ($product->get_price() + ($product->get_price() * ($highest_installment['surcharge'] / 100))) / $highest_duration;
 
                 ?>
                             <div class="slbp-col-sm-12 slbp-col-md-5">
