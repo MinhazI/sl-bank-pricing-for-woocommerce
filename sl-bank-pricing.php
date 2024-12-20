@@ -4,16 +4,18 @@
  * Plugin Name:       SL Bank Pricing for WooCommerce
  * Plugin URI:        https://minhazimohamed.com/sl-bank-pricing-for-woocommerce/
  * Description:       Enhance your WooCommerce store with SL Bank Pricing for WooCommerce special pricing and installment plans for Sri Lankan bank customers. Boost sales with localized payment options tailored for Sri Lanka.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Minhaz Irphan Mohamed
  * Author URI:        https://minhazimohamed.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       sl-bank-pricing
+ * Text Domain:       sl-bank-pricing-for-woocommerce
  * Requires Plugins:  woocommerce
  */
+
+if (! defined('ABSPATH')) exit;
 
 register_activation_hook(__FILE__, 'slbp_plugin_activation');
 
@@ -68,7 +70,7 @@ function slbp_settings_page()
 {
 ?>
     <div class="wrap">
-        <h1><?php esc_html_e('SL Bank Pricing for WooCommerce Settings', 'sl-bank-pricing'); ?></h1>
+        <h1><?php esc_html_e('SL Bank Pricing for WooCommerce Settings', 'sl-bank-pricing-for-woocommerce'); ?></h1>
         <?php settings_errors(); ?>
         <form method="post" action="options.php">
             <?php
@@ -84,7 +86,9 @@ function slbp_settings_page()
 add_action('admin_init', 'slbp_register_settings');
 function slbp_register_settings()
 {
-    register_setting('slbp_settings_group', 'slbp_enable_special_pricing');
+    register_setting('slbp_settings_group', 'slbp_enable_special_pricing', [
+        'sanitize_callback' => 'rest_sanitize_boolean'
+    ]);
     register_setting('slbp_settings_group', 'slbp_selected_banks', [
         'sanitize_callback' => function ($input) {
             return is_array($input) ? array_map('sanitize_text_field', $input) : [];
@@ -108,17 +112,19 @@ function slbp_register_settings()
             return $input;
         }
     }]);
-    register_setting('slbp_settings_group', 'slbp_show_instant_prices');
+    register_setting('slbp_settings_group', 'slbp_show_instant_prices', [
+        'sanitize_callback' => 'sanitize_text_field'
+    ]);
     register_setting('slbp_settings_group', 'slbp_front_end_message', ['sanitize_callback' => function ($input) {
         return wp_kses_post($input);
     }]);
 
-    add_settings_section('slbp_general_settings', __('General Settings', 'sl-bank-pricing'), null, 'sl-bank-pricing');
-    add_settings_field('slbp_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing'), 'slbp_enable_special_pricing_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing'), 'slbp_selected_banks_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing'), 'slbp_show_instant_prices_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing'), 'slbp_front_end_message_field', 'sl-bank-pricing', 'slbp_general_settings');
-    add_settings_field('slbp_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing'), 'slbp_payment_options_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_section('slbp_general_settings', __('General Settings', 'sl-bank-pricing-for-woocommerce'), null, 'sl-bank-pricing');
+    add_settings_field('slbp_enable_special_pricing', __('Show pricing for all products?', 'sl-bank-pricing-for-woocommerce'), 'slbp_enable_special_pricing_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_selected_banks', __('Select banks for instalment plans', 'sl-bank-pricing-for-woocommerce'), 'slbp_selected_banks_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_show_instant_prices', __('Show instant pricing for all products?', 'sl-bank-pricing-for-woocommerce'), 'slbp_show_instant_prices_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_front_end_message', __('Show a message to your customers about these prices', 'sl-bank-pricing-for-woocommerce'), 'slbp_front_end_message_field', 'sl-bank-pricing', 'slbp_general_settings');
+    add_settings_field('slbp_payment_options', __('Configure instalment plans and discounts for each bank', 'sl-bank-pricing-for-woocommerce'), 'slbp_payment_options_field', 'sl-bank-pricing', 'slbp_general_settings');
 
     function slbp_enable_special_pricing_field()
     {
